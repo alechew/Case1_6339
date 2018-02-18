@@ -106,8 +106,9 @@ def generate_raw_backup(index):
               - numpy.math.sqrt((1 - p) * (yearTriangularMax[index] - yearTriangularMin[index]) * (yearTriangularMax[index] - yearTriangularAvg[index]))
     return raw
 
+
 # this is where all starts might need a for loop or a system that will read a csv file to generate all demand.
-CityDemand =  Classes.CityDemandDetails("2020")  # MODIFY THIS VARIABLE
+CityDemand = Classes.CityDemandDetails("2020", "Shanghai", [1, 2, 3, 4, 5])  # MODIFY THIS VARIABLE
 
 
 # Generate yearly random demands;

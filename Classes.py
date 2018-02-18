@@ -1,5 +1,7 @@
 import scipy.stats as stat
 import numpy
+import random
+import statistics
 
 # classes used in code.
 
@@ -8,6 +10,7 @@ class CityDemandDetails:
     year = ""
     city = ""
     populationList = []
+    demandFromPopulation = []
     yearPConstraints = []
     yearTriangularMin = []
     yearTriangularAvg = []
@@ -22,6 +25,18 @@ class CityDemandDetails:
         "2023": 6
     }
 
+    def generate_raw(self, pconstraint, min, average, max):
+        """randomly generates daily demand ratio following triangular distribution"""
+
+        p = random.uniform(0, 1)
+        raw = 0
+        if p <= pconstraint:
+            raw = min + numpy.math.sqrt(p * (max - min) * (average - min))
+        else:
+            raw = max - numpy.math.sqrt((1 - p) * (max - min) * (max - average))
+
+        return raw
+
     def __init__(self, year, city, populationList):
         self.year = year
         self.city = city
@@ -34,10 +49,20 @@ class CityDemandDetails:
                                                0.01, 0.008]
         self.iterations = self.iterationDic.get(self.year)
 
+        # calculating the p values for the triangular distribution
         for i in range(len(self.yearTriangularAvg)):
             p_constraint = (self.yearTriangularAvg[i] - self.yearTriangularMin) / \
                            (self.yearTriangularMax[i] - self.yearTriangularMin[i])
             self.yearPConstraints.append(p_constraint)
+
+        # will use to calculate the annual growth demand.
+        for i in range(self.iterations):
+            yeardemand = populationList[i]
+            if i > 0:
+                yeardemand = populationList[i - 1] * self.generate_raw(self.yearPConstraints[i - 1],
+                self.yearTriangularMin[i - 1], self.yearTriangularAvg[i - 1], self.yearTriangularMax[i - 1])
+
+        self.demandFromPopulation.append(yeardemand)
 
 
 class YearDemand:

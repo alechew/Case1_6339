@@ -19,9 +19,9 @@ monthlyDemand = []
 monthlyDemandAverage = [0.05, 0.05, 0.06, 0.08, 0.10, 0.12, 0.16, 0.10, 0.08, 0.06, 0.05, 0.05, 0.04]
 monthlyDemandStandardDeviation = [0.01, 0.01, 0.012, 0.016, 0.02, 0.024, 0.032, 0.02, 0.016, 0.012, 0.01, 0.01, 0.008]
 
-monthInYear = [Classes.MonthInfo(31, 0), Classes.MonthInfo(28, 3), Classes.MonthInfo(31, 3), Classes.MonthInfo(30, 6),
-               Classes.MonthInfo(31, 1), Classes.MonthInfo(30, 4), Classes.MonthInfo(31, 6), Classes.MonthInfo(31, 2),
-               Classes.MonthInfo(30, 5), Classes.MonthInfo(31, 0), Classes.MonthInfo(30, 3), Classes.MonthInfo(31, 5)]
+# monthInYear = [Classes.MonthInfo(31, 0), Classes.MonthInfo(28, 3), Classes.MonthInfo(31, 3), Classes.MonthInfo(30, 6),
+#                Classes.MonthInfo(31, 1), Classes.MonthInfo(30, 4), Classes.MonthInfo(31, 6), Classes.MonthInfo(31, 2),
+#                Classes.MonthInfo(30, 5), Classes.MonthInfo(31, 0), Classes.MonthInfo(30, 3), Classes.MonthInfo(31, 5)]
 
 
 dailyDemand = []
@@ -33,9 +33,9 @@ yearTriangularMin = [0.02, 0.03, 0.05, 0.075, 0.10, 0.125, 0.15, 0.175, 0.2]
 yearTriangularAvg = [0.03, 0.05, 0.075, 0.10, 0.125, 0.15, 0.175, 0.2, 0.225]
 yearTriangularMax = [0.05, 0.075, 0.10, 0.125, 0.15, 0.175, 0.2, 0.225, 0.25]
 
-for i in range(len(yearName)):
-    p_constraint = (yearTriangularAvg[i] - yearTriangularMin) / (yearTriangularMax[i] - yearTriangularMin[i]);
-    yearPConstraints.append(p_constraint)
+# for i in range(len(yearName)):
+#     p_constraint = (yearTriangularAvg[i] - yearTriangularMin) / (yearTriangularMax[i] - yearTriangularMin[i]);
+#     yearPConstraints.append(p_constraint)
 
 # this contain the demand of everyday for every year as a single list. This gets later divided into their respective
 # years.
@@ -108,17 +108,18 @@ def generate_raw_backup(index):
 
 
 # this is where all starts might need a for loop or a system that will read a csv file to generate all demand.
-CityDemand = Classes.CityDemandDetails("2020", "Shanghai", [1, 2, 3, 4, 5])  # MODIFY THIS VARIABLE
+CityDemand = Classes.CityDemandDetails("2020", "Shanghai", [4277842.33, 4287270.71,	4295139.94,	4301538.86,	4306593.06,
+                                                            4310391.36,	4313001.17, 4314462.29])  # MODIFY THIS VARIABLE
 
-
+print "hello"
 # Generate yearly random demands;
 count = 0
-while count <= years:
-    # if statement to only use triangular distribution after the initial first year.
-    if count > 0:
-        demand = demandDistribution.generate_random_demand()
-    yearlyDemand.append(demand)
-    count = count + 1
+# while count <= years:
+#     # if statement to only use triangular distribution after the initial first year.
+#     if count > 0:
+#         demand = demandDistribution.generate_random_demand()
+#     yearlyDemand.append(demand)
+#     count = count + 1
 
 
 

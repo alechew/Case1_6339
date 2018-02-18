@@ -41,7 +41,7 @@ class CityDemandDetails:
         self.year = year
         self.city = city
         self.populationList = populationList
-        self.yearTriangularMin = [0.02, 0.03, 0.05, 0.075, 0.10, 0.125, 0.15, 0.175, 0.2]
+        self.yearTriangularMin = [0.02, 0.03, 0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.17]
         self.yearTriangularAvg = [0.03, 0.05, 0.075, 0.10, 0.125, 0.15, 0.175, 0.2, 0.225]
         self.yearTriangularMax = [0.05, 0.075, 0.10, 0.125, 0.15, 0.175, 0.2, 0.225, 0.25]
         self.monthlyDemandAverage = [0.05, 0.05, 0.06, 0.08, 0.10, 0.12, 0.16, 0.10, 0.08, 0.06, 0.05, 0.05, 0.04]
@@ -51,7 +51,7 @@ class CityDemandDetails:
 
         # calculating the p values for the triangular distribution
         for i in range(len(self.yearTriangularAvg)):
-            p_constraint = (self.yearTriangularAvg[i] - self.yearTriangularMin) / \
+            p_constraint = (self.yearTriangularAvg[i] - self.yearTriangularMin[i]) / \
                            (self.yearTriangularMax[i] - self.yearTriangularMin[i])
             self.yearPConstraints.append(p_constraint)
 

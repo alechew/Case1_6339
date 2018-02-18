@@ -4,18 +4,35 @@ import numpy
 # classes used in code.
 
 
-class YearDemandDetails:
-
+class CityDemandDetails:
+    year = ""
+    city = ""
+    populationList = []
     yearPConstraints = []
     yearTriangularMin = []
     yearTriangularAvg = []
     yearTriangularMax = []
+    monthlyDemandAverage = []
+    monthlyDemandStandardDeviation = []
+    iterations = 0  # amount of times you have to forecast.
+    iterationDic = {
+        "2020": 9,
+        "2021": 8,
+        "2022": 7,
+        "2023": 6
+    }
 
-    def __init__(self, year):
+    def __init__(self, year, city, populationList):
         self.year = year
+        self.city = city
+        self.populationList = populationList
         self.yearTriangularMin = [0.02, 0.03, 0.05, 0.075, 0.10, 0.125, 0.15, 0.175, 0.2]
         self.yearTriangularAvg = [0.03, 0.05, 0.075, 0.10, 0.125, 0.15, 0.175, 0.2, 0.225]
         self.yearTriangularMax = [0.05, 0.075, 0.10, 0.125, 0.15, 0.175, 0.2, 0.225, 0.25]
+        self.monthlyDemandAverage = [0.05, 0.05, 0.06, 0.08, 0.10, 0.12, 0.16, 0.10, 0.08, 0.06, 0.05, 0.05, 0.04]
+        self.monthlyDemandStandardDeviation = [0.01, 0.01, 0.012, 0.016, 0.02, 0.024, 0.032, 0.02, 0.016, 0.012, 0.01,
+                                               0.01, 0.008]
+        self.iterations = self.iterationDic.get(self.year)
 
         for i in range(len(self.yearTriangularAvg)):
             p_constraint = (self.yearTriangularAvg[i] - self.yearTriangularMin) / \
@@ -29,20 +46,12 @@ class YearDemand:
     city = ""
     yearlyDemand = 0
     dailyDemand = []
-    iterations = 0  # amount of times you have to forecast.
     currentIteration = 0
-    iterationDic = {
-        "2020": 9,
-        "2021": 8,
-        "2022": 7,
-        "2023": 6
-    }
 
     def __init__(self, year, city, yearlyDemand):
         self.year = year
         self.city = city
         self.yearlyDemand = yearlyDemand
-        self.iterations = self.iterationDic.get(self.year)
 
 
 class ModelDetails:

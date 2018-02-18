@@ -8,13 +8,7 @@ filename = ""
 yearName = ["2020", "2021", "2022", "2023", "2023", "2024", "2025", "2026", "2027"]
 dayName = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
-factorySpecifications = Classes.FactorySpecificationsTask2
-leadTimes = [15, 7, 5, 2, 1]
-
-demandDistribution = Classes.DemandVar(100000000, 10000000)
 yearlyDemand = []     # this can be said is the mean of every new year demand
-yearlyStandardDeviation = []    # this can be said is the standardDeviation of every new year demand
-dailyCapacityRequirements = []
 
 totalDaysInYear = 365
 years = 9
@@ -85,6 +79,10 @@ def generate_beta_monthly(index):
 
 def generate_raw(index):
     """randomly generates daily demand ratio following triangular distribution"""
+    yearTriangularMin = []
+    yearTriangularAvg = []
+    yearTriangularMax = []
+    
     p = random.uniform(0, 1)
     raw = 0
     if p <= yearPConstraints[index]:
@@ -96,12 +94,28 @@ def generate_raw(index):
     return raw
 
 
-# I think this is where all starts
+def generate_raw_backup(index):
+    """randomly generates daily demand ratio following triangular distribution"""
+    p = random.uniform(0, 1)
+    raw = 0
+    if p <= yearPConstraints[index]:
+        raw = yearTriangularMin[index] \
+              + numpy.math.sqrt(p * (yearTriangularMax[index] - yearTriangularMin[index]) * (yearTriangularAvg[index] - yearTriangularMin[index]))
+    else:
+        raw = yearTriangularMax[index] \
+              - numpy.math.sqrt((1 - p) * (yearTriangularMax[index] - yearTriangularMin[index]) * (yearTriangularMax[index] - yearTriangularAvg[index]))
+    return raw
+
+# this is where all starts might need a for loop or a system that will read a csv file to generate all demand.
+CityDemand =  Classes.CityDemandDetails("2020")  # MODIFY THIS VARIABLE
+
 
 # Generate yearly random demands;
 count = 0
 while count <= years:
-    demand = demandDistribution.generate_random_demand()
+    # if statement to only use triangular distribution after the initial first year.
+    if count > 0:
+        demand = demandDistribution.generate_random_demand()
     yearlyDemand.append(demand)
     count = count + 1
 

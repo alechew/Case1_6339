@@ -108,7 +108,7 @@ def generate_raw_backup(index):
 
 
 # this is where all starts might need a for loop or a system that will read a csv file to generate all demand.
-CityDemand = Classes.CityDemandDetails("2020", "Shanghai", [4277842.33, 4287270.71,	4295139.94,	4301538.86,	4306593.06,
+CityDemand = Classes.CityDemandDetails("2020", "Zhengzhou", [4277842.33, 4287270.71, 4295139.94, 4301538.86, 4306593.06,
                                                             4310391.36,	4313001.17, 4314462.29])  # MODIFY THIS VARIABLE
 
 print "hello"

@@ -19,10 +19,10 @@ class CityDemandDetails:
     monthlyDemandStandardDeviation = []
     iterations = 0  # amount of times you have to forecast.
     iterationDic = {
-        "2020": 9,
-        "2021": 8,
-        "2022": 7,
-        "2023": 6
+        "2020": 8,
+        "2021": 7,
+        "2022": 6,
+        "2023": 5
     }
 
     def generate_raw(self, pconstraint, min, average, max):
@@ -59,10 +59,11 @@ class CityDemandDetails:
         for i in range(self.iterations):
             yeardemand = populationList[i]
             if i > 0:
-                yeardemand = populationList[i - 1] * self.generate_raw(self.yearPConstraints[i - 1],
+                raw = 1.0 + self.generate_raw(self.yearPConstraints[i - 1],
                 self.yearTriangularMin[i - 1], self.yearTriangularAvg[i - 1], self.yearTriangularMax[i - 1])
+                yeardemand = populationList[i - 1] * raw
 
-        self.demandFromPopulation.append(yeardemand)
+            self.demandFromPopulation.append(yeardemand)
 
 
 class YearDemand:

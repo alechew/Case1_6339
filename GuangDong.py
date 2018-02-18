@@ -123,53 +123,51 @@ for i in range(len(cityDemand.yearlyDemands)):
         theYear = cityDemand.yearlyDemands[i]
         segmentDemands = []
         for j in range(len(cityDemand.monthlyDemandAverage)):
-            demandAverage = theYear.monthlyDemandAverage
-            factor = generate_beta_monthly(theYear.monthlyDemandAverage[j],
-                                                                     theYear.monthlyDemandStandardDeviation[j])
-            segDemand = theYear.yearlyDemand * factor
+            segDemand = theYear.yearlyDemand * generate_beta_monthly(cityDemand.monthlyDemandAverage[j],
+                                                                     cityDemand.monthlyDemandStandardDeviation[j])
             segmentDemands.append(segDemand)
         theYear.demandOfSegments = segmentDemands
 
 
 
-# here we calculate the daily demand
-for x in range(years):
-    if x > 0:
-        eachYearDailyDemandList.append(dailyDemandList)
-
-    dailyDemandList = []
-    for i in range(months):
-        beta = generate_beta_monthly_backup(i)
-        monthDemand = beta * yearlyDemand[x]
-        monthlyDemand.append(monthDemand)
-
-        rangeOfDaysInMonth = monthInYear[i].totalDays
-        firstDay = monthInYear[i].firstDayNumberinWeek
-        j = firstDay
-        totalIterations = firstDay + rangeOfDaysInMonth
-
-        while j < totalIterations:
-            dayOfWeek = j % 7
-
-            raw = generate_raw(dayOfWeek)
-
-            singleDayDemand = round(monthlyDemand[i] * raw, 0)
-            dailyDemand = Classes.DailyDemand(yearName[x], str(i + 1), dayName[dayOfWeek], yearlyDemand[x], monthlyDemand[i]
-                                              , singleDayDemand, x, i, dayOfWeek)
-            dailyDemandList.append(dailyDemand)
-            j = j + 1
-
-
-
-# outputs in console the daily demand generated for each year
-count = 1
-for day in dailyDemandList:
-    if isinstance(day, Classes.DailyDemand):
-        print("Year: " + day.year + ", " + day.week + ", " + day.day + ", " + str(day.dailyDemand))
-        if count % 365 == 0:
-            print("\n")
-    count += 1
-
-write_to_file()
+# # here we calculate the daily demand
+# for x in range(years):
+#     if x > 0:
+#         eachYearDailyDemandList.append(dailyDemandList)
+#
+#     dailyDemandList = []
+#     for i in range(months):
+#         beta = generate_beta_monthly_backup(i)
+#         monthDemand = beta * yearlyDemand[x]
+#         monthlyDemand.append(monthDemand)
+#
+#         rangeOfDaysInMonth = monthInYear[i].totalDays
+#         firstDay = monthInYear[i].firstDayNumberinWeek
+#         j = firstDay
+#         totalIterations = firstDay + rangeOfDaysInMonth
+#
+#         while j < totalIterations:
+#             dayOfWeek = j % 7
+#
+#             raw = generate_raw(dayOfWeek)
+#
+#             singleDayDemand = round(monthlyDemand[i] * raw, 0)
+#             dailyDemand = Classes.DailyDemand(yearName[x], str(i + 1), dayName[dayOfWeek], yearlyDemand[x], monthlyDemand[i]
+#                                               , singleDayDemand, x, i, dayOfWeek)
+#             dailyDemandList.append(dailyDemand)
+#             j = j + 1
+#
+#
+#
+# # outputs in console the daily demand generated for each year
+# count = 1
+# for day in dailyDemandList:
+#     if isinstance(day, Classes.DailyDemand):
+#         print("Year: " + day.year + ", " + day.week + ", " + day.day + ", " + str(day.dailyDemand))
+#         if count % 365 == 0:
+#             print("\n")
+#     count += 1
+#
+# write_to_file()
 
 

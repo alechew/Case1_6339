@@ -70,12 +70,17 @@ def write_to_file():
     ofile.close()
 
 
-def generate_beta_monthly(index):
+def generate_beta_monthly_backup(index):
     """generates weekly demand ratio following normal distribution with
      mean and standard deviation for its respective year"""
 
     return numpy.random.normal(monthlyDemandAverage[index], monthlyDemandStandardDeviation[index])
 
+def generate_beta_monthly(monthlyaverage, standarddeviation):
+    """generates weekly demand ratio following normal distribution with
+     mean and standard deviation for its respective year"""
+
+    return numpy.random.normal(monthlyaverage, standarddeviation)
 
 def generate_raw(index):
     """randomly generates daily demand ratio following triangular distribution"""
@@ -108,18 +113,22 @@ def generate_raw_backup(index):
 
 
 # this is where all starts might need a for loop or a system that will read a csv file to generate all demand.
-CityDemand = Classes.CityDemandDetails("2020", "Zhengzhou", [4277842.33, 4287270.71, 4295139.94, 4301538.86, 4306593.06,
+# it generates the annual demands and takes into account the national and singles days.
+cityDemand = Classes.CityDemandDetails("2020", "Zhengzhou", [4277842.33, 4287270.71, 4295139.94, 4301538.86, 4306593.06,
                                                             4310391.36,	4313001.17, 4314462.29])  # MODIFY THIS VARIABLE
 
-print "hello"
-# Generate yearly random demands;
-count = 0
-# while count <= years:
-#     # if statement to only use triangular distribution after the initial first year.
-#     if count > 0:
-#         demand = demandDistribution.generate_random_demand()
-#     yearlyDemand.append(demand)
-#     count = count + 1
+# now here we will calculate the segments demands
+for i in range(len(cityDemand.yearlyDemands)):
+    if isinstance(cityDemand.yearlyDemands[i], Classes.YearDemand):
+        theYear = cityDemand.yearlyDemands[i]
+        segmentDemands = []
+        for j in range(len(cityDemand.monthlyDemandAverage)):
+            demandAverage = theYear.monthlyDemandAverage
+            factor = generate_beta_monthly(theYear.monthlyDemandAverage[j],
+                                                                     theYear.monthlyDemandStandardDeviation[j])
+            segDemand = theYear.yearlyDemand * factor
+            segmentDemands.append(segDemand)
+        theYear.demandOfSegments = segmentDemands
 
 
 
@@ -130,7 +139,7 @@ for x in range(years):
 
     dailyDemandList = []
     for i in range(months):
-        beta = generate_beta_monthly(i)
+        beta = generate_beta_monthly_backup(i)
         monthDemand = beta * yearlyDemand[x]
         monthlyDemand.append(monthDemand)
 

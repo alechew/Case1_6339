@@ -10,7 +10,6 @@ class CityDemandDetails:
     year = ""
     city = ""
     populationList = []
-    demandFromPopulation = []
     yearPConstraints = []
     yearTriangularMin = []
     yearTriangularAvg = []
@@ -24,6 +23,11 @@ class CityDemandDetails:
         "2022": 6,
         "2023": 5
     }
+    # variables made by me, they are not inputs.
+    demandFromPopulation = []
+    yearlyDemands = []
+    nationalDayDemand = 0
+    singlesDayDemand = 0
 
     def generate_raw(self, pconstraint, min, average, max):
         """randomly generates daily demand ratio following triangular distribution"""
@@ -56,14 +60,24 @@ class CityDemandDetails:
             self.yearPConstraints.append(p_constraint)
 
         # will use to calculate the annual growth demand.
-        for i in range(self.iterations):
-            yeardemand = populationList[i]
-            if i > 0:
-                raw = 1.0 + self.generate_raw(self.yearPConstraints[i - 1],
-                self.yearTriangularMin[i - 1], self.yearTriangularAvg[i - 1], self.yearTriangularMax[i - 1])
-                yeardemand = populationList[i - 1] * raw
+        for j in range(self.iterations):
+            yeardemand = populationList[j]
+            if j > 0:
+                raw = 1.0 + self.generate_raw(self.yearPConstraints[j - 1],
+                self.yearTriangularMin[j - 1], self.yearTriangularAvg[j - 1], self.yearTriangularMax[j - 1])
+                yeardemand = populationList[j - 1] * raw
+
+            # getting out the demand of nationals day and singles day
+            self.nationalDayDemand = yeardemand * 0.12
+            self.singlesDayDemand = yeardemand * 0.04
+            yeardemand = yeardemand - self.nationalDayDemand - self.singlesDayDemand
 
             self.demandFromPopulation.append(yeardemand)
+
+        # Now we will create the year object
+        for i in range(self .iterations):
+            year = YearDemand(str(int(self.year) + i), self.city, self.demandFromPopulation[i])
+            self.yearlyDemands.append(year)
 
 
 class YearDemand:
@@ -72,6 +86,7 @@ class YearDemand:
     city = ""
     yearlyDemand = 0
     dailyDemand = []
+    demandOfSegments = []
     currentIteration = 0
 
     def __init__(self, year, city, yearlyDemand):

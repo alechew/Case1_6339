@@ -5,7 +5,7 @@ import statistics
 
 filename = ""
 
-yearName = ["2018-1", "2018-2", "2018-3", "2018-4", "2018-5"]
+yearName = ["2020", "2021", "2022", "2023", "2023", "2024", "2025", "2026", "2027"]
 dayName = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
 factorySpecifications = Classes.FactorySpecificationsTask2
@@ -17,14 +17,13 @@ yearlyStandardDeviation = []    # this can be said is the standardDeviation of e
 dailyCapacityRequirements = []
 
 totalDaysInYear = 365
-years = 5
-months = 12
+years = 9
+months = 13
 days = 7
 
 monthlyDemand = []
-monthlyDemandAverage = [0.11, 0.06, 0.08, 0.10, 0.08, 0.07, 0.11, 0.09, 0.08, 0.08, 0.07, 0.07]
-monthlyDemandStandardDeviation = [0.0268, 0.0161, 0.0195, 0.0249, 0.0206, 0.0180, 0.0285, 0.0216,
-                                  0.0197, 0.0195, 0.0176, 0.0172]
+monthlyDemandAverage = [0.05, 0.05, 0.06, 0.08, 0.10, 0.12, 0.16, 0.10, 0.08, 0.06, 0.05, 0.05, 0.04]
+monthlyDemandStandardDeviation = [0.01, 0.01, 0.012, 0.016, 0.02, 0.024, 0.032, 0.02, 0.016, 0.012, 0.01, 0.01, 0.008]
 
 monthInYear = [Classes.MonthInfo(31, 0), Classes.MonthInfo(28, 3), Classes.MonthInfo(31, 3), Classes.MonthInfo(30, 6),
                Classes.MonthInfo(31, 1), Classes.MonthInfo(30, 4), Classes.MonthInfo(31, 6), Classes.MonthInfo(31, 2),
@@ -33,12 +32,16 @@ monthInYear = [Classes.MonthInfo(31, 0), Classes.MonthInfo(28, 3), Classes.Month
 
 dailyDemand = []
 dailyDemandStandardDeviation = []
-# daily Factors
-pConstraints = [0.714, 0.221, 0.217, 0.461, 0.768, 0.580, 0.373]
-triangularMin = [0.08, 0.08, 0.11, 0.14, 0.12, 0.10, 0.13]
-triangularAvg = [0.13, 0.10, 0.13, 0.17, 0.17, 0.16, 0.15]
-triangularMax = [0.15, 0.17, 0.20, 0.21, 0.19, 0.20, 0.17]
 
+# yearly factors
+yearPConstraints = []
+yearTriangularMin = [0.02, 0.03, 0.05, 0.075, 0.10, 0.125, 0.15, 0.175, 0.2]
+yearTriangularAvg = [0.03, 0.05, 0.075, 0.10, 0.125, 0.15, 0.175, 0.2, 0.225]
+yearTriangularMax = [0.05, 0.075, 0.10, 0.125, 0.15, 0.175, 0.2, 0.225, 0.25]
+
+for i in range(len(yearName)):
+    p_constraint = (yearTriangularAvg[i] - yearTriangularMin) / (yearTriangularMax[i] - yearTriangularMin[i]);
+    yearPConstraints.append(p_constraint)
 
 # this contain the demand of everyday for every year as a single list. This gets later divided into their respective
 # years.
@@ -84,12 +87,12 @@ def generate_raw(index):
     """randomly generates daily demand ratio following triangular distribution"""
     p = random.uniform(0, 1)
     raw = 0
-    if p <= pConstraints[index]:
-        raw = triangularMin[index] \
-              + numpy.math.sqrt(p * (triangularMax[index] - triangularMin[index]) * (triangularAvg[index] - triangularMin[index]))
+    if p <= yearPConstraints[index]:
+        raw = yearTriangularMin[index] \
+              + numpy.math.sqrt(p * (yearTriangularMax[index] - yearTriangularMin[index]) * (yearTriangularAvg[index] - yearTriangularMin[index]))
     else:
-        raw = triangularMax[index] \
-              - numpy.math.sqrt((1 - p) * (triangularMax[index] - triangularMin[index]) * (triangularMax[index] - triangularAvg[index]))
+        raw = yearTriangularMax[index] \
+              - numpy.math.sqrt((1 - p) * (yearTriangularMax[index] - yearTriangularMin[index]) * (yearTriangularMax[index] - yearTriangularAvg[index]))
     return raw
 
 

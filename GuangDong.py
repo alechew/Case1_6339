@@ -47,7 +47,7 @@ productPrice = [2400,2400,2400,2400,3600,3600,3600,3600,3600,3600,4800,4800,4800
 
 productDictionary = {
     0: "F10", 1: "K10", 2: "S10", 3: "W10", 4: "F20",
-    5: "K20",6: "L20", 7: "S20", 8: "W20", 9: "X20",
+    5: "K20", 6: "L20", 7: "S20", 8: "W20", 9: "X20",
     10: "F30", 11: "K30", 12: "S30", 13: "W30", 14: "F50",
     15: "K50", 16: "L50", 17: "S50", 18: "W50", 19: "X50"
 }
@@ -174,23 +174,18 @@ for i in range(len(cityDemand.yearlyDemands)):
     if isinstance(cityDemand.yearlyDemands[i], Classes.YearDemand):
         theYear = cityDemand.yearlyDemands[i]
         segmentDemands = []
-        # monthlyBetas = []
+        monthlyBetas = []
         for j in range(len(cityDemand.monthlyDemandAverage)):
             betaMonth = generate_beta_monthly(cityDemand.monthlyDemandAverage[j],
                                                                      cityDemand.monthlyDemandStandardDeviation[j])
-            segDemand = theYear.yearlyDemand * betaMonth
-            segmentDemands.append(segDemand)
-            # monthlyBetas.append(betaMonth)
+            monthlyBetas.append(betaMonth)
 
-        # normalizedSegments = []
-        # totalBetas = sum(monthlyBetas)
-        #
-        # for k in range(len(monthlyBetas)):
-        #     normalizedValue = segmentDemands[k] * ((monthlyBetas[k] * 1) / totalBetas)
-        #     normalizedSegments.append(normalizedValue)
-        #
-        # normalizedSum = sum(normalizedSegments)
-        # theYear.demandOfSegments = normalizedSegments
+        totalBetas = sum(monthlyBetas)
+        for k in range(len(monthlyBetas)):
+            segDemand = theYear.yearlyDemand * (monthlyBetas[k] / totalBetas)
+            segmentDemands.append(segDemand)
+
+        normalizedSum = sum(segmentDemands)
         theYear.demandOfSegments = segmentDemands
 
     # now we calculate the daily demand of products.

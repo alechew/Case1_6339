@@ -154,11 +154,11 @@ yearDictionary = {
 
 listOfCities = []
 # code to open the excel spreadsheet
-with open('testCSV.csv', 'rb') as File:
+with open('testCSV.csv') as File:
     reader = csv.reader(File)
     for row in reader:
         rowLength = len(row)
-        populationList = row[1:rowLength]
+        populationList =  map(float, row[1:rowLength])
         city = Classes.CityDemandDetails(yearDictionary[rowLength], str(row[0]), populationList)
         listOfCities.append(city)
 

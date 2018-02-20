@@ -26,8 +26,6 @@ class CityDemandDetails:
     # variables made by me, they are not inputs.
     demandFromPopulation = []
     yearlyDemands = []
-    nationalDayDemand = 0
-    singlesDayDemand = 0
 
     def generate_raw(self, pconstraint, min, average, max):
         """randomly generates daily demand ratio following triangular distribution"""
@@ -68,17 +66,13 @@ class CityDemandDetails:
                 yeardemand = populationList[j - 1] * raw
 
             # getting out the demand of nationals day and singles day
-            self.nationalDayDemand = yeardemand * 0.12
-            self.singlesDayDemand = yeardemand * 0.04
-            yeardemand = yeardemand - self.nationalDayDemand - self.singlesDayDemand
+            nationalDayDemand = yeardemand * 0.12
+            singlesDayDemand = yeardemand * 0.04
+            yeardemand = yeardemand - nationalDayDemand - singlesDayDemand
 
             self.demandFromPopulation.append(yeardemand)
-
-        # Now we will create the year object
-        for i in range(self .iterations):
-            year = YearDemand(str(int(self.year) + i), self.city, self.demandFromPopulation[i])
+            year = YearDemand(str(int(self.year) + j), self.city, yeardemand, nationalDayDemand, singlesDayDemand)
             self.yearlyDemands.append(year)
-
 
 class YearDemand:
     # this will contain all the information for that specific year.
@@ -88,11 +82,15 @@ class YearDemand:
     dailyDemand = []
     demandOfSegments = []
     currentIteration = 0
+    nationalDayDemand = 0
+    singlesDayDemand = 0
 
-    def __init__(self, year, city, yearlyDemand):
+    def __init__(self, year, city, yearlyDemand, nationalday, singlesdaydemand):
         self.year = year
         self.city = city
         self.yearlyDemand = yearlyDemand
+        self.nationalDayDemand = nationalday
+        self.singlesDayDemand = singlesdaydemand
 
 
 class ModelDetails:
@@ -123,8 +121,17 @@ class Model:
         self.demand = demand
 
 
+class DayDemand:
 
+    day = 0
+    segment = 0
+    dayDemand = 0
+    productsDemand = []
 
+    def __init__(self, day, segment, dayDemand):
+        self.day = day
+        self.segment = segment
+        self.dayDemand = dayDemand
 
 
 

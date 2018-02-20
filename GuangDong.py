@@ -141,6 +141,38 @@ for i in range(len(cityDemand.yearlyDemands)):
         # theYear.demandOfSegments = normalizedSegments
         theYear.demandOfSegments = segmentDemands
 
+    # now we calculate the daily demand of products.
+    dailyDemandListForYear = []
+
+    segment = 1
+    dayDemand = theYear.demandOfSegments[segment] / 28
+    for i in range(1, totalDaysInYear):
+
+        if i % 29 == 0:
+            segment = segment + 1
+            dayDemand = theYear.demandOfSegments[segment] / 28
+
+        day = Classes.DayDemand(i, segment, dayDemand)
+        dailyDemandListForYear.append(day)
+
+    # day 274 = october first (national day) and day 315 = singles day(november 11)
+    holiday = dailyDemandListForYear[273]
+    if isinstance(holiday, Classes.DayDemand):
+        holiday.dayDemand = holiday.dayDemand + theYear.nationalDayDemand
+
+    holiday = dailyDemandListForYear[314]
+    if isinstance(holiday, Classes.DayDemand):
+        holiday.dayDemand = holiday.dayDemand + theYear.singlesDayDemand
+
+    yearlyDemand = dailyDemandListForYear      # appending the demand of the 364 days of the year
+
+
+
+
+
+
+
+
 
 
 # # here we calculate the daily demand

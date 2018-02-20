@@ -16,6 +16,7 @@ class CityDemandDetails:
     yearTriangularMax = []
     monthlyDemandAverage = []
     monthlyDemandStandardDeviation = []
+
     iterations = 0  # amount of times you have to forecast.
     iterationDic = {
         "2020": 8,
@@ -24,8 +25,6 @@ class CityDemandDetails:
         "2023": 5
     }
     # variables made by me, they are not inputs.
-    demandFromPopulation = []
-    yearlyDemands = []
 
     def generate_raw(self, pconstraint, min, average, max):
         """randomly generates daily demand ratio following triangular distribution"""
@@ -50,6 +49,9 @@ class CityDemandDetails:
         self.monthlyDemandStandardDeviation = [0.01, 0.01, 0.012, 0.016, 0.02, 0.024, 0.032, 0.02, 0.016, 0.012, 0.01,
                                                0.01, 0.008]
         self.iterations = self.iterationDic.get(self.year)
+
+        self.demandFromPopulation = []
+        self.yearlyDemands = []
 
         # calculating the p values for the triangular distribution
         for i in range(len(self.yearTriangularAvg)):

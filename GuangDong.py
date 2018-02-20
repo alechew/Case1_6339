@@ -114,19 +114,22 @@ def generate_raw_backup(index):
 
 
 yearDictionary = {
-    9: "2021",
-    8: "2022",
-    7: "2023",
-    6: "2024",
-    5: "2025"
+    9: "2020",
+    8: "2021",
+    7: "2022",
+    6: "2023",
 }
 
 
+listOfCities = []
 # code to open the excel spreadsheet
 with open('testCSV.csv') as File:
     reader = csv.reader(File)
     for row in reader:
-        print row[0]
+        rowLength = len(row)
+        populationList = row[1:rowLength]
+        city = Classes.CityDemandDetails(yearDictionary[rowLength], str(row[0]), populationList)
+        listOfCities.append(city)
 
 
 # this is where all starts might need a for loop or a system that will read a csv file to generate all demand.

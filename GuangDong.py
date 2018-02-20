@@ -158,8 +158,9 @@ with open('testCSV.csv') as File:
     reader = csv.reader(File)
     for row in reader:
         rowLength = len(row)
-        populationList =  map(float, row[1:rowLength])
-        city = Classes.CityDemandDetails(yearDictionary[rowLength], str(row[0]), populationList)
+        populationList = row[1:rowLength]
+        popListFloat = [float(pop) for pop in populationList]
+        city = Classes.CityDemandDetails(yearDictionary[rowLength], str(row[0]), popListFloat)
         listOfCities.append(city)
 
 

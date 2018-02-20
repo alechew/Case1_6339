@@ -34,6 +34,25 @@ yearTriangularMin = [0.02, 0.03, 0.05, 0.075, 0.10, 0.125, 0.15, 0.175, 0.2]
 yearTriangularAvg = [0.03, 0.05, 0.075, 0.10, 0.125, 0.15, 0.175, 0.2, 0.225]
 yearTriangularMax = [0.05, 0.075, 0.10, 0.125, 0.15, 0.175, 0.2, 0.225, 0.25]
 
+
+# here we will generate the demand for each product on the day.
+productMin = [.1, .05, .05, .05, .04, .03, .03, .02, .02, .02, .02, .01, .01, .01, .005, .005, .005, .005, .005, .005]
+productAvg = [.17, .13, .10, .09, .08, .06, .05, .05, .04, .04, .03, .03, .03, .02, .02, .02, .01, .01, .01, .01]
+productMax = [.20, .18, .15, .15, .12, .10, .10, .10, .08, .08, .08, .06, .06, .06, .06, .04, .04, .04, .04, .04]
+productPConstraint = [0.7000000000000001, 0.6153846153846154, 0.5000000000000001, 0.39999999999999997, 0.5000000000000001,
+     0.4285714285714285, 0.28571428571428575, 0.375, 0.33333333333333337, 0.33333333333333337, 0.16666666666666666,
+     0.39999999999999997, 0.39999999999999997, 0.2, 0.2727272727272727, 0.4285714285714285, 0.14285714285714285,
+     0.14285714285714285, 0.14285714285714285, 0.14285714285714285]
+productPrice = [2400,2400,2400,2400,3600,3600,3600,3600,3600,3600,4800,4800,4800,4800,6000,6000,6000,6000,6000,6000]
+
+productDictionary = {
+    0: "F10", 1: "K10", 2: "S10", 3: "W10", 4: "F20",
+    5: "K20",6: "L20", 7: "S20", 8: "W20", 9: "X20",
+    10: "F30", 11: "K30", 12: "S30", 13: "W30", 14: "F50",
+    15: "K50", 16: "L50", 17: "S50", 18: "W50", 19: "X50"
+}
+
+
 # for i in range(len(yearName)):
 #     p_constraint = (yearTriangularAvg[i] - yearTriangularMin) / (yearTriangularMax[i] - yearTriangularMin[i]);
 #     yearPConstraints.append(p_constraint)
@@ -99,6 +118,17 @@ def generate_raw(index):
               - numpy.math.sqrt((1 - p) * (yearTriangularMax[index] - yearTriangularMin[index]) * (yearTriangularMax[index] - yearTriangularAvg[index]))
     return raw
 
+def generate_raw_product(pconstraint, min, average, max):
+    """randomly generates daily demand ratio following triangular distribution"""
+
+    p = random.uniform(0, 1)
+    raw = 0
+    if p <= pconstraint:
+        raw = min + numpy.math.sqrt(p * (max - min) * (average - min))
+    else:
+        raw = max - numpy.math.sqrt((1 - p) * (max - min) * (max - average))
+
+    return raw
 
 def generate_raw_backup(index):
     """randomly generates daily demand ratio following triangular distribution"""
@@ -121,9 +151,10 @@ yearDictionary = {
 }
 
 
+
 listOfCities = []
 # code to open the excel spreadsheet
-with open('testCSV.csv') as File:
+with open('testCSV.csv', 'rb') as File:
     reader = csv.reader(File)
     for row in reader:
         rowLength = len(row)
@@ -184,8 +215,18 @@ for i in range(len(cityDemand.yearlyDemands)):
     if isinstance(holiday, Classes.DayDemand):
         holiday.dayDemand = holiday.dayDemand + theYear.singlesDayDemand
 
-    yearlyDemand = dailyDemandListForYear      # appending the demand of the 364 days of the year
+    # now we generate the daily demand of the 20 products... for each day...
+    for m in range(len(dailyDemandListForYear)):
+        theDay = dailyDemandListForYear[m]
+        productList = []
+        for n in range(len(productDictionary)):
+            if isinstance(theDay, Classes.DayDemand):
+                productDemand = theDay.dayDemand * generate_raw_product(productPConstraint[n], productMin[n],
+                                                                        productAvg[n], productMax[n])
+                productList.append(Classes.Model(productDictionary[n], productDemand, productPrice[n]))
+        theDay.productsDemand = productList
 
+    yearlyDemand = dailyDemandListForYear      # appending the demand of the 364 days of the year
 
 
 

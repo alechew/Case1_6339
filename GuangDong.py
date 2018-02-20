@@ -2,6 +2,7 @@ import Classes
 import numpy
 import random
 import statistics
+import csv
 
 filename = ""
 
@@ -112,6 +113,22 @@ def generate_raw_backup(index):
     return raw
 
 
+yearDictionary = {
+    9: "2021",
+    8: "2022",
+    7: "2023",
+    6: "2024",
+    5: "2025"
+}
+
+
+# code to open the excel spreadsheet
+with open('testCSV.csv') as File:
+    reader = csv.reader(File)
+    for row in reader:
+        print row[0]
+
+
 # this is where all starts might need a for loop or a system that will read a csv file to generate all demand.
 # it generates the annual demands and takes into account the national and singles days.
 cityDemand = Classes.CityDemandDetails("2020", "Zhengzhou", [4277842.33, 4287270.71, 4295139.94, 4301538.86, 4306593.06,
@@ -144,7 +161,7 @@ for i in range(len(cityDemand.yearlyDemands)):
     # now we calculate the daily demand of products.
     dailyDemandListForYear = []
 
-    segment = 1
+    segment = 0
     dayDemand = theYear.demandOfSegments[segment] / 28
     for i in range(1, totalDaysInYear):
 
@@ -152,7 +169,7 @@ for i in range(len(cityDemand.yearlyDemands)):
             segment = segment + 1
             dayDemand = theYear.demandOfSegments[segment] / 28
 
-        day = Classes.DayDemand(i, segment, dayDemand)
+        day = Classes.DayDemand(i, segment + 1, dayDemand)
         dailyDemandListForYear.append(day)
 
     # day 274 = october first (national day) and day 315 = singles day(november 11)

@@ -122,11 +122,24 @@ for i in range(len(cityDemand.yearlyDemands)):
     if isinstance(cityDemand.yearlyDemands[i], Classes.YearDemand):
         theYear = cityDemand.yearlyDemands[i]
         segmentDemands = []
+        # monthlyBetas = []
         for j in range(len(cityDemand.monthlyDemandAverage)):
-            segDemand = theYear.yearlyDemand * generate_beta_monthly(cityDemand.monthlyDemandAverage[j],
+            betaMonth = generate_beta_monthly(cityDemand.monthlyDemandAverage[j],
                                                                      cityDemand.monthlyDemandStandardDeviation[j])
+            segDemand = theYear.yearlyDemand * betaMonth
             segmentDemands.append(segDemand)
-        theYear.demandOfSegments = segmentDemands
+            # monthlyBetas.append(betaMonth)
+
+        # normalizedSegments = []
+        # totalBetas = sum(monthlyBetas)
+        #
+        # for k in range(len(monthlyBetas)):
+        #     normalizedValue = segmentDemands[k] * ((monthlyBetas[k] * 1) / totalBetas)
+        #     normalizedSegments.append(normalizedValue)
+        #
+        # normalizedSum = sum(normalizedSegments)
+        # theYear.demandOfSegments = normalizedSegments
+        #theYear.demandOfSegments = segmentDemands
 
 
 

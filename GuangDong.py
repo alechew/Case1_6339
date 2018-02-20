@@ -170,9 +170,9 @@ cityDemand = Classes.CityDemandDetails("2020", "Zhengzhou", [4277842.33, 4287270
                                                             4310391.36,	4313001.17, 4314462.29])  # MODIFY THIS VARIABLE
 
 # now here we will calculate the segments demands
-for i in range(len(cityDemand.yearlyDemands)):
-    if isinstance(cityDemand.yearlyDemands[i], Classes.YearDemand):
-        theYear = cityDemand.yearlyDemands[i]
+for v in range(len(cityDemand.yearlyDemands)):
+    if isinstance(cityDemand.yearlyDemands[v], Classes.YearDemand):
+        theYear = cityDemand.yearlyDemands[v]
         segmentDemands = []
         monthlyBetas = []
         for j in range(len(cityDemand.monthlyDemandAverage)):
@@ -182,7 +182,7 @@ for i in range(len(cityDemand.yearlyDemands)):
 
         totalBetas = sum(monthlyBetas)
         for k in range(len(monthlyBetas)):
-            segDemand = theYear.yearlyDemand * (monthlyBetas[k] / totalBetas)
+            segDemand = theYear.yearlyDemand * (monthlyBetas[k] / totalBetas) #normalizing
             segmentDemands.append(segDemand)
 
         normalizedSum = sum(segmentDemands)
@@ -193,13 +193,13 @@ for i in range(len(cityDemand.yearlyDemands)):
 
     segment = 0
     dayDemand = theYear.demandOfSegments[segment] / 28
-    for i in range(1, totalDaysInYear):
+    for v in range(1, totalDaysInYear):
 
-        if i % 29 == 0:
+        if v % 29 == 0:
             segment = segment + 1
             dayDemand = theYear.demandOfSegments[segment] / 28
 
-        day = Classes.DayDemand(i, segment + 1, dayDemand)
+        day = Classes.DayDemand(v, segment + 1, dayDemand)
         dailyDemandListForYear.append(day)
 
     # day 274 = october first (national day) and day 315 = singles day(november 11)
@@ -214,12 +214,21 @@ for i in range(len(cityDemand.yearlyDemands)):
     # now we generate the daily demand of the 20 products... for each day...
     for m in range(len(dailyDemandListForYear)):
         theDay = dailyDemandListForYear[m]
+        dailyProductBetas = []
         productList = []
+        dailyTotalBetas = 0
+
+        # generate the betas of the products to later normalize.
+        for c in range(len(productDictionary)):
+            dailyProductBetas.append(generate_raw_product(productPConstraint[c], productMin[c],
+                                                                        productAvg[c], productMax[c]))
+        dailyTotalBetas = sum(dailyProductBetas)
+
         for n in range(len(productDictionary)):
             if isinstance(theDay, Classes.DayDemand):
-                productDemand = theDay.dayDemand * generate_raw_product(productPConstraint[n], productMin[n],
-                                                                        productAvg[n], productMax[n])
+                productDemand = theDay.dayDemand * (dailyProductBetas[n] / dailyTotalBetas)
                 productList.append(Classes.Model(productDictionary[n], productDemand, productPrice[n]))
+
         theDay.productsDemand = productList
 
     yearlyDemand = dailyDemandListForYear      # appending the demand of the 364 days of the year
@@ -227,7 +236,15 @@ for i in range(len(cityDemand.yearlyDemands)):
 
 
 
-
+# Backup
+#     for n in range(len(productDictionary)):
+#         if isinstance(theDay, Classes.DayDemand):
+#             productDemand = theDay.dayDemand * generate_raw_product(productPConstraint[n], productMin[n],
+#                                                                     productAvg[n], productMax[n])
+#             productList.append(Classes.Model(productDictionary[n], productDemand, productPrice[n]))
+#     theDay.productsDemand = productList
+#
+# yearlyDemand = dailyDemandListForYear  # appending the demand of the 36
 
 
 

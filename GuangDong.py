@@ -139,7 +139,7 @@ for i in range(len(cityDemand.yearlyDemands)):
         #
         # normalizedSum = sum(normalizedSegments)
         # theYear.demandOfSegments = normalizedSegments
-        #theYear.demandOfSegments = segmentDemands
+        theYear.demandOfSegments = segmentDemands
 
 
 

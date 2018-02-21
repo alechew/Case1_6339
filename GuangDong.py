@@ -76,10 +76,9 @@ def write_to_file():
 
     for cities in listOfCities:
         if isinstance(cities, Classes.CityDemandDetails):
-            title = cities.city
             for years in cities.yearlyDemands:
                 if isinstance(years, Classes.YearDemand):
-                    title = title + " " + years.year + "\n"
+                    title = cities.city + " " + years.year + "\n"
                     ofile.write(title)
                     columns = "Day," + "F10,K10,S10,W10,F20,K20,L20,S20,W20,X20,F30,K30,S30,W30,F50,K50,L50,S50,W50,X50\n"
                     ofile.write(columns)
@@ -93,7 +92,7 @@ def write_to_file():
                                 product = theDailyDemand.productsDemand[g]
                                 if isinstance(product, Classes.Model):
                                     demand = demand + str(product.demand) + ","
-                                    if f == 19:
+                                    if g == 19:
                                         demand = demand[:-1]
                             dayInput = day + demand + "\n"
                             ofile.write(dayInput)

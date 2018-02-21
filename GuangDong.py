@@ -72,21 +72,43 @@ eachYearDailyDemandList = []
 def write_to_file():
     """writes on a CSV value the randomly generated daily demands from year 2018 to 2023
     """
-    ofile = open(filename + "_Generated-Random-Demand-Originating Sample City.csv", "wb")
+    ofile = open(filename + "CityDemands", "wb")
 
-    # writing the title of the columns
-    row = "Year,Month,Day,Demand\n"
-    ofile.write(row)
+    for cities in listOfCities:
+        if isinstance(cities, Classes.CityDemandDetails):
+            title = cities.city
+            for years in cities.yearlyDemands:
+                if isinstance(years, Classes.YearDemand):
+                    title = title + " " + years.year + "\n"
+                    ofile.write(title)
+                    columns = "Day," + "F10,K10,S10,W10,F20,K20,L20,S20,W20,X20,F30,K30,S30,W30,F50,K50,L50,S50,W50,X50\n"
+                    ofile.write(columns)
 
-    for j in range(0, len(eachYearDailyDemandList),1):
-        theYearDemand = eachYearDailyDemandList[j]
+                    for f in range(len(years.dailyDemand)):
+                        theDailyDemand = years.dailyDemand[f]
+                        if isinstance(theDailyDemand, Classes.DayDemand):
+                            day = str(theDailyDemand.day) + ","
+                            demand = ""
+                            for g in range(len(theDailyDemand.productsDemand)):
+                                product = theDailyDemand.productsDemand[g]
+                                if isinstance(product, Classes.Model):
+                                    demand = demand + str(product.demand) + ","
+                                    if f == 19:
+                                        demand = demand[:-1]
+                            dayInput = day + demand + "\n"
+                            ofile.write(dayInput)
+                    ofile.write("\n\n\n")
+                    title = ""
 
-        for i in range(0, len(theYearDemand), 1):
-            day = theYearDemand[i]
-            if isinstance(day, Classes.DailyDemand):
-                row = day.year + "," + day.week + "," + day.day + "," + str(day.dailyDemand) + "\n"
-            ofile.write(row)
-        ofile.write("\n")
+    # for j in range(0, len(eachYearDailyDemandList),1):
+    #     theYearDemand = eachYearDailyDemandList[j]
+    #
+    #     for i in range(0, len(theYearDemand), 1):
+    #         day = theYearDemand[i]
+    #         if isinstance(day, Classes.DailyDemand):
+    #             row = day.year + "," + day.week + "," + day.day + "," + str(day.dailyDemand) + "\n"
+    #         ofile.write(row)
+    #     ofile.write("\n")
     ofile.close()
 
 
@@ -231,10 +253,8 @@ for cityDemand in listOfCities:
 
             theDay.productsDemand = productList
 
-        yearlyDemand = dailyDemandListForYear      # appending the demand of the 364 days of the year
-        print "finish"
+        theYear.dailyDemand = dailyDemandListForYear      # appending the demand of the 364 days of the year
 
-print "finish"
 
 # # outputs in console the daily demand generated for each year
 # count = 1
@@ -245,4 +265,4 @@ print "finish"
 #             print("\n")
 #     count += 1
 #
-# write_to_file()
+write_to_file()

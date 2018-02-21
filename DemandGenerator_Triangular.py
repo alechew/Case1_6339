@@ -72,7 +72,7 @@ eachYearDailyDemandList = []
 def write_to_file():
     """writes on a CSV value the randomly generated daily demands from year 2018 to 2023
     """
-    ofile = open(filename + "CityDemands", "wb")
+    ofile = open(filename + "CityDemands_9.csv", "wb")
     counter = 1
     for cities in listOfCities:
         print(str(counter))
@@ -140,6 +140,7 @@ def generate_raw(index):
               - numpy.math.sqrt((1 - p) * (yearTriangularMax[index] - yearTriangularMin[index]) * (yearTriangularMax[index] - yearTriangularAvg[index]))
     return raw
 
+
 def generate_raw_product(pconstraint, min, average, max):
     """randomly generates daily demand ratio following triangular distribution"""
 
@@ -176,7 +177,7 @@ yearDictionary = {
 
 listOfCities = []
 # code to open the excel spreadsheet
-with open('population_final_python_final.csv') as File:
+with open('population_final_python_final_9.csv') as File:
     reader = csv.reader(File)
     for row in reader:
         rowLength = len(row)
@@ -249,7 +250,7 @@ for cityDemand in listOfCities:
             for n in range(len(productDictionary)):
                 if isinstance(theDay, Classes.DayDemand):
                     productDemand = theDay.dayDemand * (dailyProductBetas[n] / dailyTotalBetas)
-                    productList.append(Classes.Model(productDictionary[n], productDemand, productPrice[n]))
+                    productList.append(Classes.Model(productDictionary[n], int(productDemand), productPrice[n]))
 
             theDay.productsDemand = productList
 

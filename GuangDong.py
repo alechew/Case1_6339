@@ -73,8 +73,9 @@ def write_to_file():
     """writes on a CSV value the randomly generated daily demands from year 2018 to 2023
     """
     ofile = open(filename + "CityDemands", "wb")
-
+    counter = 1
     for cities in listOfCities:
+        print(str(counter))
         if isinstance(cities, Classes.CityDemandDetails):
             for years in cities.yearlyDemands:
                 if isinstance(years, Classes.YearDemand):
@@ -98,7 +99,7 @@ def write_to_file():
                             ofile.write(dayInput)
                     ofile.write("\n\n\n")
                     title = ""
-
+        counter = counter + 1
     # for j in range(0, len(eachYearDailyDemandList),1):
     #     theYearDemand = eachYearDailyDemandList[j]
     #

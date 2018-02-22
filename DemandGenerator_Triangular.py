@@ -253,8 +253,16 @@ for cityDemand in listOfCities:
                     productList.append(Classes.Model(productDictionary[n], int(productDemand), productPrice[n]))
 
             theDay.productsDemand = productList
-
         theYear.dailyDemand = dailyDemandListForYear      # appending the demand of the 364 days of the year
+        productTotals = []
+        for x in range(len(theYear.dailyDemand)):
+            productAmount = 0
+            for y in range(len(theYear.dailyDemand[x].productsDemand)):
+                productAmount = productAmount + theYear.dailyDemand[x].productsDemand[y].demand
+            productTotals.append(productAmount)
+
+        theYear.productTotals = productTotals
+
 
 
 # # outputs in console the daily demand generated for each year

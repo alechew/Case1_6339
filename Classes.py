@@ -84,6 +84,7 @@ class YearDemand:
     currentIteration = 0
     nationalDayDemand = 0
     singlesDayDemand = 0
+    productTotals = []
 
     def __init__(self, year, city, yearlyDemand, nationalday, singlesdaydemand):
         self.year = year

@@ -72,7 +72,7 @@ eachYearDailyDemandList = []
 def write_to_file():
     """writes on a CSV value the randomly generated daily demands from year 2018 to 2023
     """
-    ofile = open(filename + "CityDemands_9.csv", "wb")
+    ofile = open(filename + "CityDemands_9_test.csv", "wb")
     counter = 1
     for cities in listOfCities:
         print(str(counter))
@@ -177,7 +177,7 @@ yearDictionary = {
 
 listOfCities = []
 # code to open the excel spreadsheet
-with open('population_final_python_final_9.csv') as File:
+with open('population_final_python_final_1.csv') as File:
     reader = csv.reader(File)
     for row in reader:
         rowLength = len(row)

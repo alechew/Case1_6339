@@ -61,11 +61,9 @@ class CityDemandDetails:
 
         # will use to calculate the annual growth demand.
         for j in range(self.iterations):
-            yeardemand = populationList[j]
-            if j > 0:
-                raw = 1.0 + self.generate_raw(self.yearPConstraints[j - 1],
-                self.yearTriangularMin[j - 1], self.yearTriangularAvg[j - 1], self.yearTriangularMax[j - 1])
-                yeardemand = populationList[j - 1] * raw
+            raw = self.generate_raw(self.yearPConstraints[j],
+            self.yearTriangularMin[j], self.yearTriangularAvg[j], self.yearTriangularMax[j])
+            yeardemand = populationList[j] * raw
 
             # getting out the demand of nationals day and singles day
             nationalDayDemand = yeardemand * 0.12

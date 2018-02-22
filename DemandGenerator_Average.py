@@ -72,14 +72,14 @@ eachYearDailyDemandList = []
 def write_to_file():
     """writes on a CSV value the randomly generated daily demands from year 2018 to 2023
     """
-    ofile = open(filename + "CityDemands_Average_1.csv", "wb")
+    ofile = open(filename + "CityDemands_Average_9.csv", "wb")
     counter = 1
     for cities in listOfCities:
         print(str(counter))
         if isinstance(cities, Classes_A.CityDemandDetails):
             for years in cities.yearlyDemands:
                 if isinstance(years, Classes_A.YearDemand):
-                    title = cities.city + " " + years.year + "\n"
+                    title = cities.city + "," + years.year + "\n"
                     ofile.write(title)
                     columns = "Day," + "F10,K10,S10,W10,F20,K20,L20,S20,W20,X20,F30,K30,S30,W30,F50,K50,L50,S50,W50,X50\n"
                     ofile.write(columns)

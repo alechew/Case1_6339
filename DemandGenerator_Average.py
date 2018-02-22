@@ -100,8 +100,8 @@ def write_to_file():
                     totalsRow = "Totals,"
                     for h in range(len(years.productTotals)):
                         totalsRow = totalsRow + str(years.productTotals[h]) + ","
-                        if h == 19:
-                            demand = demand[:-1]
+
+                    totalsRow = totalsRow + str(sum(years.productTotals))
                     ofile.write(totalsRow)
                     ofile.write("\n")
                     moneyPerModel = []

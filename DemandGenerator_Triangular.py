@@ -100,9 +100,16 @@ def write_to_file():
                     totalsRow = "Totals,"
                     for h in range(len(years.productTotals)):
                         totalsRow = totalsRow + str(years.productTotals[h]) + ","
-                        if g == 19:
-                            demand = demand[:-1]
+                        if h == 19:
+                            totalsRow = totalsRow[:-1]
                     ofile.write(totalsRow)
+                    ofile.write("\n")
+                    totalsPriceRow = "Total in Price,"
+                    for d in range(len(years.productTotals)):
+                        totalsPriceRow = totalsPriceRow + str((years.productTotals[d] * productPrice[d])) + ","
+                        if d == 19:
+                            totalsPriceRow = totalsPriceRow[:-1]
+                    ofile.write(totalsPriceRow)
                     ofile.write("\n\n\n")
                     title = ""
         counter = counter + 1

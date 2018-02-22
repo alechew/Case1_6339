@@ -97,6 +97,12 @@ def write_to_file():
                                         demand = demand[:-1]
                             dayInput = day + demand + "\n"
                             ofile.write(dayInput)
+                    totalsRow = "Totals,"
+                    for h in range(len(years.productTotals)):
+                        totalsRow = totalsRow + str(years.productTotals[h]) + ","
+                        if g == 19:
+                            demand = demand[:-1]
+                    ofile.write(totalsRow)
                     ofile.write("\n\n\n")
                     title = ""
         counter = counter + 1
@@ -253,12 +259,14 @@ for cityDemand in listOfCities:
                     productList.append(Classes.Model(productDictionary[n], int(productDemand), productPrice[n]))
 
             theDay.productsDemand = productList
+
         theYear.dailyDemand = dailyDemandListForYear      # appending the demand of the 364 days of the year
         productTotals = []
-        for x in range(len(theYear.dailyDemand)):
+
+        for x in range(20):
             productAmount = 0
-            for y in range(len(theYear.dailyDemand[x].productsDemand)):
-                productAmount = productAmount + theYear.dailyDemand[x].productsDemand[y].demand
+            for y in range(len(theYear.dailyDemand)):
+                productAmount = productAmount + theYear.dailyDemand[y].productsDemand[x].demand
             productTotals.append(productAmount)
 
         theYear.productTotals = productTotals

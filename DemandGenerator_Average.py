@@ -104,11 +104,14 @@ def write_to_file():
                             demand = demand[:-1]
                     ofile.write(totalsRow)
                     ofile.write("\n")
+                    moneyPerModel = []
                     totalsPriceRow = "Total in Price,"
                     for d in range(len(years.productTotals)):
-                        totalsPriceRow = totalsPriceRow + str((years.productTotals[d] * productPrice[d])) + ","
-                        if d == 19:
-                            totalsPriceRow = totalsPriceRow[:-1]
+                        profit = years.productTotals[d] * productPrice[d]
+                        moneyPerModel.append(profit)
+                        totalsPriceRow = totalsPriceRow + str(profit) + ","
+
+                    totalsPriceRow = totalsPriceRow + str(sum(moneyPerModel))
                     ofile.write(totalsPriceRow)
                     ofile.write("\n\n\n")
                     title = ""

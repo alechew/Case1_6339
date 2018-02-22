@@ -100,15 +100,18 @@ def write_to_file():
                     totalsRow = "Totals,"
                     for h in range(len(years.productTotals)):
                         totalsRow = totalsRow + str(years.productTotals[h]) + ","
-                        if h == 19:
-                            totalsRow = totalsRow[:-1]
+
+                    totalsRow = totalsRow + str(sum(years.productTotals))
                     ofile.write(totalsRow)
                     ofile.write("\n")
+                    moneyPerModel = []
                     totalsPriceRow = "Total in Price,"
                     for d in range(len(years.productTotals)):
-                        totalsPriceRow = totalsPriceRow + str((years.productTotals[d] * productPrice[d])) + ","
-                        if d == 19:
-                            totalsPriceRow = totalsPriceRow[:-1]
+                        profit = years.productTotals[d] * productPrice[d]
+                        moneyPerModel.append(profit)
+                        totalsPriceRow = totalsPriceRow + str(profit) + ","
+
+                    totalsPriceRow = totalsPriceRow + str(sum(moneyPerModel))
                     ofile.write(totalsPriceRow)
                     ofile.write("\n\n\n")
                     title = ""

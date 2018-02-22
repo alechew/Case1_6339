@@ -63,7 +63,7 @@ class CityDemandDetails:
         for j in range(self.iterations):
             yeardemand = populationList[j]
             if j > 0:
-                yeardemand = populationList[j - 1] * self.yearTriangularAvg[j - 1]
+                yeardemand = populationList[j - 1] * (1 + self.yearTriangularAvg[j - 1])
 
             # getting out the demand of nationals day and singles day
             nationalDayDemand = yeardemand * 0.12

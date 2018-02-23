@@ -68,7 +68,7 @@ yearDeviationOfRandomDemand = []
 # will have 5 list with the demand for every year iteration
 eachYearDailyDemandList = []
 
-ofile = open(filename + "CityDemands_9_test.csv", "wb")
+ofile = open(filename + "CityDemands_100_Scenarios.csv", "wb")
 
 
 def write_to_file():

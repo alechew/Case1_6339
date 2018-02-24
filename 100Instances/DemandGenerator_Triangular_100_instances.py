@@ -196,7 +196,7 @@ with open('population_final_python_final.csv') as File:
 #                                                             4310391.36,	4313001.17, 4314462.29])  # MODIFY THIS VARIABLE
 # now here is where
 
-for scenario in range(2):
+for scenario in range(100):
 
     scenarioName = "Alternative Scenario " + str(scenario + 1) + "\n\n"
     ofile.write(scenarioName)
@@ -291,6 +291,7 @@ for scenario in range(2):
         # new city
         ofile.write("\n\n")
         title = ""
+        print "new city to start, " + str(scenarioName)
 
 ofile.close()
 

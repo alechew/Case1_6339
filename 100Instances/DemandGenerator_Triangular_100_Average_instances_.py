@@ -68,7 +68,7 @@ yearDeviationOfRandomDemand = []
 # will have 5 list with the demand for every year iteration
 eachYearDailyDemandList = []
 
-ofile = open(filename + "CityDemands_100_Scenarios.csv", "wb")
+ofile = open(filename + "CityDemands_100_Average_Scenarios.csv", "wb")
 
 
 def write_to_file():
@@ -196,19 +196,20 @@ with open('population_final_python_final.csv') as File:
 #                                                             4310391.36,	4313001.17, 4314462.29])  # MODIFY THIS VARIABLE
 # now here is where
 
-for scenario in range(100):
+counterCity = 1
+for cityDemand in listOfCities:
+    title = cityDemand.city + "\n"
+    ofile.write(title)
+    columns = "Year Product Demand," + "F10,K10,S10,W10,F20,K20,L20,S20,W20,X20,F30,K30,S30,W30,F50,K50,L50,S50,W50,X50\n"
+    ofile.write(columns)
 
-    scenarioName = "Alternative Scenario " + str(scenario + 1) + "\n\n"
-    ofile.write(scenarioName)
-    for cityDemand in listOfCities:
-        title = cityDemand.city + "\n"
-        ofile.write(title)
-        columns = "Year Product Demand," + "F10,K10,S10,W10,F20,K20,L20,S20,W20,X20,F30,K30,S30,W30,F50,K50,L50,S50,W50,X50\n"
-        ofile.write(columns)
-        # now here we will calculate the segments demands
-        for v in range(len(cityDemand.yearlyDemands)):
-            if isinstance(cityDemand.yearlyDemands[v], Classes.YearDemand):
-                theYear = cityDemand.yearlyDemands[v]
+    # repeat here 100 times for each city.
+    # now here we will calculate the segments demands
+    p_100_totals_average = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []]
+    for l in range(len(cityDemand.yearlyDemands)):
+        for scenarios in range(100):
+            if isinstance(cityDemand.yearlyDemands[l], Classes.YearDemand):
+                theYear = cityDemand.yearlyDemands[l]
                 segmentDemands = []
                 monthlyBetas = []
                 for j in range(len(cityDemand.monthlyDemandAverage)):
@@ -274,24 +275,25 @@ for scenario in range(100):
                 productAmount = 0
                 for y in range(len(theYear.dailyDemand)):
                     productAmount = productAmount + theYear.dailyDemand[y].productsDemand[x].demand
-                productTotals.append(productAmount)
+                p_100_totals_average[x].append(productAmount)
 
             theYear.dailyDemand = []
-            theYear.productTotals = productTotals
-            totalsRow = theYear.year + ","
-            for h in range(len(theYear.productTotals)):
-                totalsRow = totalsRow + str(theYear.productTotals[h]) + ","
 
-            totalsRow = totalsRow + str(sum(theYear.productTotals))
-            ofile.write(totalsRow)
-            ofile.write("\n")
-            theYear.productTotals = []
-            theYear.dailyDemand = []
+        # 100 scenario averages
+        perProductAverage = []
+        for daysOfProduct in p_100_totals_average:
+            perProductAverage.append(int(numpy.mean(daysOfProduct)))
 
-        # new city
-        ofile.write("\n\n")
-        title = ""
-        print "new city to start, " + str(scenarioName)
+        totalsRow = theYear.year + ","
+        for h in range(len(perProductAverage)):
+            totalsRow = totalsRow + str(perProductAverage[h]) + ","
+        ofile.write(totalsRow)
+        ofile.write("\n")
+
+    ofile.write("\n\n")
+    title = ""
+    print "city number " + str(counterCity) + " finished"
+    counterCity = counterCity + 1
 
 ofile.close()
 

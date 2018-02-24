@@ -68,7 +68,7 @@ yearDeviationOfRandomDemand = []
 # will have 5 list with the demand for every year iteration
 eachYearDailyDemandList = []
 
-ofile = open(filename + "CityDemands_100_Average_Scenarios.csv", "wb")
+ofile = open(filename + "CityDemands_100_Average_Scenarios_withSTD.csv", "wb")
 
 
 def write_to_file():
@@ -281,13 +281,21 @@ for cityDemand in listOfCities:
 
         # 100 scenario averages
         perProductAverage = []
+        perProductstd = []
         for daysOfProduct in p_100_totals_average:
             perProductAverage.append(int(numpy.mean(daysOfProduct)))
+            perProductstd.append(numpy.std(daysOfProduct))
 
-        totalsRow = theYear.year + ","
+        totalsRow = theYear.year + " average,"
         for h in range(len(perProductAverage)):
             totalsRow = totalsRow + str(perProductAverage[h]) + ","
+        totalsRow = totalsRow + str(sum(perProductAverage))
         ofile.write(totalsRow)
+        ofile.write("\n")
+        stdRow = "std,"
+        for sd in range(len(perProductAverage)):
+            stdRow = stdRow + str(perProductstd[sd]) + ","
+        ofile.write(stdRow)
         ofile.write("\n")
 
     ofile.write("\n\n")

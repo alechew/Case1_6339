@@ -231,13 +231,15 @@ for cityDemand in listOfCities:
             segment = 0
             dayDemand = theYear.demandOfSegments[segment] / 28
             for v in range(1, totalDaysInYear):
-
-                if v % 29 == 0:
+                dayDemand = theYear.demandOfSegments[segment] / 28
+                if v % 28 == 0:
+                    day = Classes.DayDemand(v, segment, dayDemand)
+                    dailyDemandListForYear.append(day)
                     segment = segment + 1
-                    dayDemand = theYear.demandOfSegments[segment] / 28
 
-                day = Classes.DayDemand(v, segment + 1, dayDemand)
-                dailyDemandListForYear.append(day)
+                if v % 28 != 0:
+                    day = Classes.DayDemand(v, segment, dayDemand)
+                    dailyDemandListForYear.append(day)
 
             # day 274 = october first (national day) and day 315 = singles day(november 11)
             holiday = dailyDemandListForYear[273]

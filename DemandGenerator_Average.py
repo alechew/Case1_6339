@@ -17,7 +17,7 @@ months = 13
 days = 7
 
 monthlyDemand = []
-monthlyDemandAverage = [0.05, 0.05, 0.06, 0.08, 0.10, 0.12, 0.16, 0.10, 0.08, 0.06, 0.05, 0.05, 0.04]
+monthlyDemandAverage = [0.05, 0.02, 0.06, 0.08, 0.10, 0.12, 0.16, 0.10, 0.08, 0.06, 0.05, 0.05, 0.04]
 monthlyDemandStandardDeviation = [0.01, 0.01, 0.012, 0.016, 0.02, 0.024, 0.032, 0.02, 0.016, 0.012, 0.01, 0.01, 0.008]
 
 # monthInYear = [Classes.MonthInfo(31, 0), Classes.MonthInfo(28, 3), Classes.MonthInfo(31, 3), Classes.MonthInfo(30, 6),
@@ -226,13 +226,16 @@ for cityDemand in listOfCities:
         segment = 0
         dayDemand = theYear.demandOfSegments[segment] / 28
         for v in range(1, totalDaysInYear):
-
-            if v % 29 == 0:
+            dayDemand = theYear.demandOfSegments[segment] / 28
+            if v % 28 == 0:
+                day = Classes_A.DayDemand(v, segment, dayDemand)
+                dailyDemandListForYear.append(day)
                 segment = segment + 1
-                dayDemand = theYear.demandOfSegments[segment] / 28
 
-            day = Classes_A.DayDemand(v, segment + 1, dayDemand)
-            dailyDemandListForYear.append(day)
+
+            if v % 28 != 0:
+                day = Classes_A.DayDemand(v, segment, dayDemand)
+                dailyDemandListForYear.append(day)
 
         # day 274 = october first (national day) and day 315 = singles day(november 11)
         holiday = dailyDemandListForYear[273]

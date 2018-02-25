@@ -205,8 +205,8 @@ for cityDemand in listOfCities:
 
     # repeat here 100 times for each city.
     # now here we will calculate the segments demands
-    p_100_totals_average = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []]
     for l in range(len(cityDemand.yearlyDemands)):
+        p_100_totals_average = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []]
         for scenarios in range(100):
             if isinstance(cityDemand.yearlyDemands[l], Classes.YearDemand):
                 theYear = cityDemand.yearlyDemands[l]

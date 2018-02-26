@@ -213,7 +213,7 @@ for cityDemand in listOfCities:
 
     title = cityDemand.city + "\n"
     ofile.write(title)
-    columns = "Year Product Demand," + "F10,K10,S10,W10,F20,K20,L20,S20,W20,X20,F30,K30,S30,W30,F50,K50,L50,S50,W50,X50\n"
+    columns = "Year Product Demand," + "F10,K10,S10,W10,F20,K20,L20,S20,W20,X20,F30,K30,S30,W30,F50,K50,L50,S50,W50,X50, Yearly Demand\n"
     ofile.write(columns)
 
     # now here we will calculate the segments demands

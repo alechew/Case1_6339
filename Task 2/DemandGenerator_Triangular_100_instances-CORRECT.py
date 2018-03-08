@@ -221,7 +221,7 @@ productDictionary = {
 for cityDemand in listOfCities:
     # now here we will calculate the segments demands
     for l in range(len(cityDemand.yearlyDemands)):
-        title = cityDemand.city + "," + str(cityDemand.yearlyDemands[l]) + "\n"
+        title = cityDemand.city + "," + "\n"
         ofile.write(title)
         columns = "Year,Day,F10,K10,S10,W10,F20,K20,L20,S20,W20,X20,F30,K30,S30,W30,F50,K50,L50,S50,W50,X50, , ,Year,Day,F10,K10,S10,W10,F20,K20,L20,S20,W20,X20,F30,K30,S30,W30,F50,K50,L50,S50,W50,X50, , ,\n"
         ofile.write(columns)
@@ -309,12 +309,14 @@ for cityDemand in listOfCities:
             for printProduct in range(len(productDictionary)):
                 averageRow = averageRow + "," + str(productDictionary.get(printProduct).get("avg")[printDay])
             # adding the separation
-            averageRow = averageRow + ", , "
+            averageRow = averageRow + ", , ," + theYear.year + ","
+            averageRow = averageRow + str(printDay + 1)
             for printProduct in range(len(productDictionary)):
                 averageRow = averageRow + "," + str(productDictionary.get(printProduct).get("std")[printDay])
+            averageRow = averageRow + "\n"
+            ofile.write(averageRow)
+            averageRow = theYear.year + ","
 
-        averageRow = averageRow + "\n"
-        ofile.write(averageRow)
         ofile.write("\n")
         ofile.write("\n")
 

@@ -195,56 +195,27 @@ with open('task2_question2.csv') as File:
 #                                                             4310391.36,	4313001.17, 4314462.29])  # MODIFY THIS VARIABLE
 # now here is where
 
-# list of total demand for specific day for specific product.
-p1 = []
-p2 = []
-p3 = []
-p4 = []
-p5 = []
-p6 = []
-p7 = []
-p8 = []
-p9 = []
-p10 = []
-p11 = []
-p12 = []
-p13 = []
-p14 = []
-p15 = []
-p16 = []
-p17 = []
-p18 = []
-p19 = []
-p20 = []
-
-# appending list that will hold the daily demand
-for day in range(364):
-    p1.append([])
-    p2.append([])
-    p3.append([])
-    p4.append([])
-    p5.append([])
-    p6.append([])
-    p7.append([])
-    p8.append([])
-    p9.append([])
-    p10.append([])
-    p11.append([])
-    p12.append([])
-    p13.append([])
-    p14.append([])
-    p15.append([])
-    p16.append([])
-    p17.append([])
-    p18.append([])
-    p19.append([])
-    p20.append([])
-
 productDictionary = {
-    0: p1, 1: p2, 2: p3, 3: p4, 4: p5,
-    5: p6, 6: p7, 7: p8, 8: p9, 9: p10,
-    10: p11, 11: p12, 12: p13, 13: p14, 14: p15,
-    15: p16, 16: p17, 17: p18, 18: p19, 19: p20
+    0: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    1: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    2: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    3: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    4: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    5: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    6: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    7: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    8: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    9: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    10: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    11: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    12: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    13: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    14: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    15: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    16: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    17: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    18: {"list": [[] for x in range(364)], "avg": [], "std": []},
+    19: {"list": [[] for x in range(364)], "avg": [], "std": []}
 }
 
 for cityDemand in listOfCities:
@@ -256,7 +227,7 @@ for cityDemand in listOfCities:
         ofile.write(columns)
 
         # for loop that will run 100 scenarios per day per year
-        for scenario in range(1):
+        for scenario in range(2):
 
             if isinstance(cityDemand.yearlyDemands[l], Classes.YearDemand):
                 theYear = cityDemand.yearlyDemands[l]
@@ -316,13 +287,24 @@ for cityDemand in listOfCities:
                 for n in range(len(productDictionary)):
                     if isinstance(theDay, Classes.DayDemand):
                         productDemand = theDay.dayDemand * (dailyProductBetas[n] / dailyTotalBetas)
-                        productDictionary.get(n)[m].append(int(productDemand))
+                        productDictionary.get(n).get("list")[m].append(int(productDemand))
                         # productList.append(Classes.Model(productDictionary[n], int(productDemand), productPrice[n]))
 
                 # theDay.productsDemand = productList
 
             # theYear.dailyDemand = dailyDemandListForYear  # appending the demand of the 364 days of the year
-            productTotals = []
+            # productTotals = []
+        # calculate the 100 scenario averages
+        for scenarioDay in range(364):
+            for scenarioProduct in range(len(productDictionary)):
+                avg = numpy.mean(productDictionary.get(scenarioProduct).get("list")[scenarioDay])
+                std = numpy.std(productDictionary.get(scenarioProduct).get("list")[scenarioDay])
+                productDictionary.get(scenarioProduct).get("avg").append(int(avg))
+                productDictionary.get(scenarioProduct).get("std").append(int(std))
+
+
+        string = "hello"
+
 
         #     for x in range(20):
         #         productAmount = 0

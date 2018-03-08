@@ -1,8 +1,9 @@
-import Classes
-import numpy
-import random
-import statistics
 import csv
+import random
+
+import numpy
+
+import Classes_A
 
 filename = ""
 
@@ -72,26 +73,26 @@ eachYearDailyDemandList = []
 def write_to_file():
     """writes on a CSV value the randomly generated daily demands from year 2018 to 2023
     """
-    ofile = open(filename + "CityDemands_1.csv", "wb")
+    ofile = open(filename + "TEST.csv", "wb")
     counter = 1
     for cities in listOfCities:
         print(str(counter))
-        if isinstance(cities, Classes.CityDemandDetails):
+        if isinstance(cities, Classes_A.CityDemandDetails):
             for years in cities.yearlyDemands:
-                if isinstance(years, Classes.YearDemand):
-                    title = cities.city + " " + years.year + "\n"
+                if isinstance(years, Classes_A.YearDemand):
+                    title = cities.city + "," + years.year + "\n"
                     ofile.write(title)
                     columns = "Day," + "F10,K10,S10,W10,F20,K20,L20,S20,W20,X20,F30,K30,S30,W30,F50,K50,L50,S50,W50,X50\n"
                     ofile.write(columns)
 
                     for f in range(len(years.dailyDemand)):
                         theDailyDemand = years.dailyDemand[f]
-                        if isinstance(theDailyDemand, Classes.DayDemand):
+                        if isinstance(theDailyDemand, Classes_A.DayDemand):
                             day = str(theDailyDemand.day) + ","
                             demand = ""
                             for g in range(len(theDailyDemand.productsDemand)):
                                 product = theDailyDemand.productsDemand[g]
-                                if isinstance(product, Classes.Model):
+                                if isinstance(product, Classes_A.Model):
                                     demand = demand + str(product.demand) + ","
                                     if g == 19:
                                         demand = demand[:-1]
@@ -193,12 +194,12 @@ yearDictionary = {
 
 listOfCities = []
 # code to open the excel spreadsheet
-with open('population_final_python_final_1.csv') as File:
+with open('population_final_python_final.csv') as File:
     reader = csv.reader(File)
     for row in reader:
         rowLength = len(row)
         populationList = map(float, row[1:rowLength])
-        listOfCities.append(Classes.CityDemandDetails(yearDictionary[rowLength], str(row[0]), populationList))
+        listOfCities.append(Classes_A.CityDemandDetails(yearDictionary[rowLength], str(row[0]), populationList))
 
 
 # this is where all starts might need a for loop or a system that will read a csv file to generate all demand.
@@ -206,25 +207,26 @@ with open('population_final_python_final_1.csv') as File:
 # cityDemand = Classes.CityDemandDetails("2020", "Zhengzhou", [4277842.33, 4287270.71, 4295139.94, 4301538.86, 4306593.06,
 #                                                             4310391.36,	4313001.17, 4314462.29])  # MODIFY THIS VARIABLE
 
+ofile = open(filename + "Expected Demand Daily Detail.csv", "wb")
+
 # now here is where
 for cityDemand in listOfCities:
+
     # now here we will calculate the segments demands
     for v in range(len(cityDemand.yearlyDemands)):
-        if isinstance(cityDemand.yearlyDemands[v], Classes.YearDemand):
+        title = cityDemand.city + "," + str(int(cityDemand.year) + v) + "\n"
+        ofile.write(title)
+        columns = "Day," + "F10,K10,S10,W10,F20,K20,L20,S20,W20,X20,F30,K30,S30,W30,F50,K50,L50,S50,W50,X50\n"
+        ofile.write(columns)
+
+        if isinstance(cityDemand.yearlyDemands[v], Classes_A.YearDemand):
             theYear = cityDemand.yearlyDemands[v]
             segmentDemands = []
-            monthlyBetas = []
-            for j in range(len(cityDemand.monthlyDemandAverage)):
-                betaMonth = generate_beta_monthly(cityDemand.monthlyDemandAverage[j],
-                                                                         cityDemand.monthlyDemandStandardDeviation[j])
-                monthlyBetas.append(betaMonth)
 
-            totalBetas = sum(monthlyBetas)
-            for k in range(len(monthlyBetas)):
-                segDemand = theYear.yearlyDemand * (monthlyBetas[k] / totalBetas) #normalizing
+            for k in range(len(monthlyDemandAverage)):
+                segDemand = theYear.yearlyDemand * monthlyDemandAverage[k]
                 segmentDemands.append(segDemand)
 
-            normalizedSum = sum(segmentDemands)
             theYear.demandOfSegments = segmentDemands
 
         # now we calculate the daily demand of products.
@@ -235,55 +237,66 @@ for cityDemand in listOfCities:
         for v in range(1, totalDaysInYear):
             dayDemand = theYear.demandOfSegments[segment] / 28
             if v % 28 == 0:
-                day = Classes.DayDemand(v, segment, dayDemand)
+                day = Classes_A.DayDemand(v, segment, dayDemand)
                 dailyDemandListForYear.append(day)
                 segment = segment + 1
 
+
             if v % 28 != 0:
-                day = Classes.DayDemand(v, segment, dayDemand)
+                day = Classes_A.DayDemand(v, segment, dayDemand)
                 dailyDemandListForYear.append(day)
 
         # day 274 = october first (national day) and day 315 = singles day(november 11)
         holiday = dailyDemandListForYear[273]
-        if isinstance(holiday, Classes.DayDemand):
+        if isinstance(holiday, Classes_A.DayDemand):
             holiday.dayDemand = holiday.dayDemand + theYear.nationalDayDemand
 
         holiday = dailyDemandListForYear[314]
-        if isinstance(holiday, Classes.DayDemand):
+        if isinstance(holiday, Classes_A.DayDemand):
             holiday.dayDemand = holiday.dayDemand + theYear.singlesDayDemand
 
         # now we generate the daily demand of the 20 products... for each day...
         for m in range(len(dailyDemandListForYear)):
             theDay = dailyDemandListForYear[m]
-            dailyProductBetas = []
             productList = []
             dailyTotalBetas = 0
-
-            # generate the betas of the products to later normalize.
-            for c in range(len(productDictionary)):
-                dailyProductBetas.append(generate_raw_product(productPConstraint[c], productMin[c],
-                                                                            productAvg[c], productMax[c]))
-            dailyTotalBetas = sum(dailyProductBetas)
-
+            day = str(m + 1) + ","
+            demand = ""
             for n in range(len(productDictionary)):
-                if isinstance(theDay, Classes.DayDemand):
-                    productDemand = theDay.dayDemand * (dailyProductBetas[n] / dailyTotalBetas)
-                    productList.append(Classes.Model(productDictionary[n], int(productDemand), productPrice[n]))
+                if isinstance(theDay, Classes_A.DayDemand):
+                    productDemand = theDay.dayDemand * productAvg[n]
+                    productList.append(Classes_A.Model(productDictionary[n], int(productDemand), productPrice[n]))
+
+            for f in range(len(productList)):
+                demand = demand + str(int(productList[f].demand)) + ","
+            dayInput = day + demand + "\n"
+            ofile.write(dayInput)
 
             theDay.productsDemand = productList
 
         theYear.dailyDemand = dailyDemandListForYear      # appending the demand of the 364 days of the year
         productTotals = []
-
         for x in range(20):
             productAmount = 0
             for y in range(len(theYear.dailyDemand)):
                 productAmount = productAmount + theYear.dailyDemand[y].productsDemand[x].demand
             productTotals.append(productAmount)
 
-        theYear.productTotals = productTotals
+        totalsRow = "Totals,"
+        for h in range(len(productTotals)):
+            totalsRow = totalsRow + str(productTotals[h]) + ","
+
+        totalsRow = totalsRow + str(sum(productTotals))
+        ofile.write(totalsRow)
+        ofile.write("\n\n")
+
+        theYear.dailyDemand = []
 
 
+
+    ofile.write("\n")
+
+        # theYear.productTotals = productTotals
 
 # # outputs in console the daily demand generated for each year
 # count = 1
@@ -294,4 +307,4 @@ for cityDemand in listOfCities:
 #             print("\n")
 #     count += 1
 #
-write_to_file()
+# write_to_file()

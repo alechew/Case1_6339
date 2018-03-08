@@ -1,7 +1,8 @@
-import Classes
-import numpy
 import random
-import statistics
+
+import numpy
+
+import Classes
 
 """Considering each month as 28 days. Therefore we divide the monthly demand by four and calculate base on that demand."""
 
@@ -13,7 +14,7 @@ dayName = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "
 factorySpecifications = Classes.FactorySpecificationsTask2
 leadTimes = [15, 7, 5, 2, 1]
 
-demandDistribution = Classes.DemandVar(80000000, 12000000)
+demandDistribution = Classes.DemandVar(100000000, 10000000)
 yearlyDemand = []     # this can be said is the mean of every new year demand
 yearlyStandardDeviation = []    # this can be said is the standardDeviation of every new year demand
 dailyCapacityRequirements = []
@@ -59,7 +60,7 @@ eachYearDailyDemandList = []
 def write_to_file():
     """writes on a CSV value the randomly generated daily demands from year 2018 to 2023
     """
-    ofile = open(filename + "Originating_Different_City.csv", "wb")
+    ofile = open(filename + "Originating_Sample_City.csv", "wb")
 
     # writing the title of the columns
     row = "Year,Month,Day,Demand\n"

@@ -1,8 +1,8 @@
+import csv
+import random
+
 import Classes
 import numpy
-import random
-import statistics
-import csv
 
 filename = ""
 

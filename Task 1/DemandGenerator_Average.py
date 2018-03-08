@@ -1,8 +1,9 @@
-import Classes_A
-import numpy
-import random
-import statistics
 import csv
+import random
+
+import numpy
+
+import Classes_A
 
 filename = ""
 
@@ -72,7 +73,7 @@ eachYearDailyDemandList = []
 def write_to_file():
     """writes on a CSV value the randomly generated daily demands from year 2018 to 2023
     """
-    ofile = open(filename + "TEST.csv", "wb")
+    ofile = open(filename + "CityDemands_Average_9.csv", "wb")
     counter = 1
     for cities in listOfCities:
         print(str(counter))
@@ -193,7 +194,7 @@ yearDictionary = {
 
 listOfCities = []
 # code to open the excel spreadsheet
-with open('population_final_python_final.csv') as File:
+with open('population_final_python_final_9.csv') as File:
     reader = csv.reader(File)
     for row in reader:
         rowLength = len(row)
@@ -206,16 +207,8 @@ with open('population_final_python_final.csv') as File:
 # cityDemand = Classes.CityDemandDetails("2020", "Zhengzhou", [4277842.33, 4287270.71, 4295139.94, 4301538.86, 4306593.06,
 #                                                             4310391.36,	4313001.17, 4314462.29])  # MODIFY THIS VARIABLE
 
-ofile = open(filename + "Expected Demand.csv", "wb")
-
 # now here is where
 for cityDemand in listOfCities:
-
-    title = cityDemand.city + "\n"
-    ofile.write(title)
-    columns = "Year Product Demand," + "F10,K10,S10,W10,F20,K20,L20,S20,W20,X20,F30,K30,S30,W30,F50,K50,L50,S50,W50,X50, Yearly Demand\n"
-    ofile.write(columns)
-
     # now here we will calculate the segments demands
     for v in range(len(cityDemand.yearlyDemands)):
         if isinstance(cityDemand.yearlyDemands[v], Classes_A.YearDemand):
@@ -275,21 +268,7 @@ for cityDemand in listOfCities:
                 productAmount = productAmount + theYear.dailyDemand[y].productsDemand[x].demand
             productTotals.append(productAmount)
 
-        totalsRow = theYear.year + ","
-        for h in range(len(productTotals)):
-            totalsRow = totalsRow + str(productTotals[h]) + ","
-
-        totalsRow = totalsRow + str(sum(productTotals))
-        ofile.write(totalsRow)
-        ofile.write("\n")
-
-        theYear.dailyDemand = []
-
-
-
-    ofile.write("\n")
-
-        # theYear.productTotals = productTotals
+        theYear.productTotals = productTotals
 
 # # outputs in console the daily demand generated for each year
 # count = 1
@@ -300,4 +279,4 @@ for cityDemand in listOfCities:
 #             print("\n")
 #     count += 1
 #
-# write_to_file()
+write_to_file()

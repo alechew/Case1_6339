@@ -223,7 +223,7 @@ for cityDemand in listOfCities:
     for l in range(len(cityDemand.yearlyDemands)):
         title = cityDemand.city + "," + str(cityDemand.yearlyDemands[l]) + "\n"
         ofile.write(title)
-        columns = "Year,Day," + "F10,K10,S10,W10,F20,K20,L20,S20,W20,X20,F30,K30,S30,W30,F50,K50,L50,S50,W50,X50\n"
+        columns = "Year,Day,F10,K10,S10,W10,F20,K20,L20,S20,W20,X20,F30,K30,S30,W30,F50,K50,L50,S50,W50,X50, , ,Year,Day,F10,K10,S10,W10,F20,K20,L20,S20,W20,X20,F30,K30,S30,W30,F50,K50,L50,S50,W50,X50, , ,\n"
         ofile.write(columns)
 
         # for loop that will run 100 scenarios per day per year
@@ -303,35 +303,20 @@ for cityDemand in listOfCities:
                 productDictionary.get(scenarioProduct).get("std").append(int(std))
 
 
-        string = "hello"
+        averageRow = theYear.year + ","
+        for printDay in range(364):
+            averageRow = averageRow + str(printDay + 1)
+            for printProduct in range(len(productDictionary)):
+                averageRow = averageRow + "," + str(productDictionary.get(printProduct).get("avg")[printDay])
+            # adding the separation
+            averageRow = averageRow + ", , "
+            for printProduct in range(len(productDictionary)):
+                averageRow = averageRow + "," + str(productDictionary.get(printProduct).get("std")[printDay])
 
-
-        #     for x in range(20):
-        #         productAmount = 0
-        #         for y in range(len(theYear.dailyDemand)):
-        #             productAmount = productAmount + theYear.dailyDemand[y].productsDemand[x].demand
-        #         p_100_totals_average[x].append(productAmount)
-        #
-        #     theYear.dailyDemand = []
-        #
-        #     # 100 scenario averages
-        # perProductAverage = []
-        # perProductstd = []
-        # for daysOfProduct in p_100_totals_average:
-        #     perProductAverage.append(int(numpy.mean(daysOfProduct)))
-        #     perProductstd.append(numpy.std(daysOfProduct))
-        #
-        # totalsRow = theYear.year + " average,"
-        # for h in range(len(perProductAverage)):
-        #     totalsRow = totalsRow + str(perProductAverage[h]) + ","
-        # totalsRow = totalsRow + str(sum(perProductAverage))
-        # ofile.write(totalsRow)
-        # ofile.write("\n")
-        # stdRow = "std,"
-        # for sd in range(len(perProductAverage)):
-        #     stdRow = stdRow + str(perProductstd[sd]) + ","
-        # ofile.write(stdRow)
-        # ofile.write("\n")
+        averageRow = averageRow + "\n"
+        ofile.write(averageRow)
+        ofile.write("\n")
+        ofile.write("\n")
 
     # ofile.write("\n\n")
     # title = ""

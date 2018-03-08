@@ -227,7 +227,7 @@ for cityDemand in listOfCities:
         ofile.write(columns)
 
         # for loop that will run 100 scenarios per day per year
-        for scenario in range(2):
+        for scenario in range(100):
 
             if isinstance(cityDemand.yearlyDemands[l], Classes.YearDemand):
                 theYear = cityDemand.yearlyDemands[l]

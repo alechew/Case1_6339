@@ -47,7 +47,7 @@ for z in range(len(listOfCities)):
     response = gmaps.geocode(listOfCities[z])
     coordinates = response[0].get('geometry').get('location')
     theCoordinates = str(float("{0:.5f}".format(coordinates.get('lat')))) + "," + str(float("{0:.5f}".format(coordinates.get('lng'))))
-    cityDictionary[key]['location'] = theCoordinates
+    cityDictionary[z]['location'] = theCoordinates
 
 # opening csv file to output
 filename = ""

@@ -56,6 +56,15 @@ for z in range(len(listOfCities)):
     theCoordinates = str(float("{0:.5f}".format(coordinates.get('lat')))) + "," + str(float("{0:.5f}".format(coordinates.get('lng'))))
     cityDictionary[z]['location'] = theCoordinates
 
+# opening csv file to output
+filename = ""
+ofile = open(filename + "city-distances.csv", "wb")
+
+columns = "City, Latitude, Longitud, Distance\n"
+ofile.write(columns)
+for cities in range(len(cityDictionary)):
+    cityRow = cityDictionary[cities].get('name') + "," + cityDictionary[cities].get('location') + "," + str(cityDictionary[cities].get('distance') / 1000) + "\n"
+    ofile.write(cityRow)
 
 
 string = "hello"

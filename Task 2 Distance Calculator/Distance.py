@@ -34,12 +34,12 @@ for key in range(len(listOfCities)):
     jsonDistances = json.loads(distancesRequest.text)
     distances = jsonDistances['rows']
     distanceElements = []
-
+    print str(key) + "  " + listOfCities[key]
     for x in range(len(distances)):
         distanceElements = distances[x].get('elements')
 
-    for y in range(len(distanceElements)):
-        cityDictionary[key]['distance'] = (distanceElements[0].get('distance').get('value'))
+
+    cityDictionary[key]['distance'] = (distanceElements[0].get('distance').get('value'))
 
 
 

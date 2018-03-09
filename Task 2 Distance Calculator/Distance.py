@@ -8,12 +8,11 @@ import requests
 import sys
 import csv
 
+shenzhenLocation = '22.542883,114.062996'
 gmaps = googlemaps.Client(key='AIzaSyB8RHdgEToHGLyQUA71DRyXGQqfoVJgSHs')
 # Google Distance Matrix base URL to which all other parameters are attached
-base_url = 'https://maps.googleapis.com/maps/api/distancematrix/json?'
-shenzhenLocation = '22.542883,114.062996'
-
-
+base_url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=22.542883,114.062996&destinations='
+end_base_url = "&key=AIzaSyB8RHdgEToHGLyQUA71DRyXGQqfoVJgSHs"
 cityDictionary = {
 
 }
@@ -29,32 +28,26 @@ with open('cities_china.csv') as File:
         listOfCities.append(row[0])
         counter = counter + 1
 
-# Prepare the request details for the assembly into a request URL
-payload = {
-    'origins': shenzhenLocation,
-    'destinations': '|'.join(listOfCities),
-    'api_key': 'AIzaSyB8RHdgEToHGLyQUA71DRyXGQqfoVJgSHs'
-}
+for key in range(len(listOfCities)):
+    # Assemble the URL and query the web service
+    distancesRequest = requests.get(base_url + listOfCities[key] + end_base_url)
+    jsonDistances = json.loads(distancesRequest.text)
+    distances = jsonDistances['rows']
+    distanceElements = []
 
-# Assemble the URL and query the web service
-distancesRequest = requests.get(base_url, params=payload)
+    for x in range(len(distances)):
+        distanceElements = distances[x].get('elements')
 
-jsonDistances = json.loads(distancesRequest.text)
+    for y in range(len(distanceElements)):
+        cityDictionary[key]['distance'] = (distanceElements[0].get('distance').get('value'))
 
-distances = jsonDistances['rows']
-distanceElements = []
 
-for x in range(len(distances)):
-    distanceElements = distances[x].get('elements')
-
-for y in range(len(distanceElements)):
-    cityDictionary[y]['distance'] = (distanceElements[y].get('distance').get('value'))
 
 for z in range(len(listOfCities)):
     response = gmaps.geocode(listOfCities[z])
     coordinates = response[0].get('geometry').get('location')
     theCoordinates = str(float("{0:.5f}".format(coordinates.get('lat')))) + "," + str(float("{0:.5f}".format(coordinates.get('lng'))))
-    cityDictionary[z]['location'] = theCoordinates
+    cityDictionary[key]['location'] = theCoordinates
 
 # opening csv file to output
 filename = ""

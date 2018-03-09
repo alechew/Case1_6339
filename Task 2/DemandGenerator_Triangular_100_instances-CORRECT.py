@@ -195,32 +195,55 @@ with open('task2_question2.csv') as File:
 #                                                             4310391.36,	4313001.17, 4314462.29])  # MODIFY THIS VARIABLE
 # now here is where
 
-productDictionary = {
-    0: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    1: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    2: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    3: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    4: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    5: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    6: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    7: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    8: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    9: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    10: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    11: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    12: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    13: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    14: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    15: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    16: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    17: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    18: {"list": [[] for x in range(364)], "avg": [], "std": []},
-    19: {"list": [[] for x in range(364)], "avg": [], "std": []}
-}
+# productDictionary = {
+#     0: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     1: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     2: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     3: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     4: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     5: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     6: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     7: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     8: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     9: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     10: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     11: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     12: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     13: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     14: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     15: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     16: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     17: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     18: {"list": [[] for x in range(364)], "avg": [], "std": []},
+#     19: {"list": [[] for x in range(364)], "avg": [], "std": []}
+# }
 
 for cityDemand in listOfCities:
     # now here we will calculate the segments demands
     for l in range(len(cityDemand.yearlyDemands)):
+        productDictionary = {
+            0: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            1: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            2: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            3: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            4: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            5: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            6: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            7: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            8: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            9: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            10: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            11: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            12: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            13: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            14: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            15: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            16: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            17: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            18: {"list": [[] for x in range(364)], "avg": [], "std": []},
+            19: {"list": [[] for x in range(364)], "avg": [], "std": []}
+        }
+
         title = cityDemand.city + "," + "\n"
         ofile.write(title)
         columns = "Year,Day,F10,K10,S10,W10,F20,K20,L20,S20,W20,X20,F30,K30,S30,W30,F50,K50,L50,S50,W50,X50, , ,Year,Day,F10,K10,S10,W10,F20,K20,L20,S20,W20,X20,F30,K30,S30,W30,F50,K50,L50,S50,W50,X50, , ,\n"
@@ -316,6 +339,7 @@ for cityDemand in listOfCities:
             averageRow = averageRow + "\n"
             ofile.write(averageRow)
             averageRow = theYear.year + ","
+
 
         ofile.write("\n")
         ofile.write("\n")

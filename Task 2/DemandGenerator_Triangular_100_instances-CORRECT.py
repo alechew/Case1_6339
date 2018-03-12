@@ -67,7 +67,7 @@ yearDeviationOfRandomDemand = []
 # will have 5 list with the demand for every year iteration
 eachYearDailyDemandList = []
 
-ofile = open(filename + "task2_question2-CHINA.csv", "wb")
+ofile = open(filename + "task2_question2-daily-demand-all-cities.csv", "wb")
 
 
 def write_to_file():
@@ -181,7 +181,7 @@ yearDictionary = {
 
 listOfCities = []
 # code to open the excel spreadsheet
-with open('task2_question2.csv') as File:
+with open('population_final_python_final.csv') as File:
     reader = csv.reader(File)
     for row in reader:
         rowLength = len(row)
@@ -220,6 +220,7 @@ with open('task2_question2.csv') as File:
 
 for cityDemand in listOfCities:
     # now here we will calculate the segments demands
+    print cityDemand.city
     for l in range(len(cityDemand.yearlyDemands)):
         productDictionary = {
             0: {"list": [[] for x in range(364)], "avg": [], "std": []},

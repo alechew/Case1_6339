@@ -21,7 +21,7 @@ cityDictionary = {
 listOfCities = []
 # code to open the excel spreadsheet
 counter = 0
-with open('cities-task3.csv') as File:
+with open('cities_2.csv') as File:
     reader = csv.reader(File)
     for row in reader:
         cityDictionary[counter] = {'name': row[0], 'location': '', 'distance': 0}
@@ -51,7 +51,7 @@ for z in range(len(listOfCities)):
 
 # opening csv file to output
 filename = ""
-ofile = open(filename + "city-distances-task3.csv", "wb")
+ofile = open(filename + "city-distances.csv", "wb")
 
 columns = "City, Latitude, Longitud, Distance\n"
 ofile.write(columns)

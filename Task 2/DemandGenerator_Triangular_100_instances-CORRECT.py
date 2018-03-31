@@ -67,7 +67,7 @@ yearDeviationOfRandomDemand = []
 # will have 5 list with the demand for every year iteration
 eachYearDailyDemandList = []
 
-ofile = open(filename + "task2_question2-daily-demand-all-cities.csv", "wb")
+ofile = open(filename + "cluster6.csv", "wb")
 
 
 def write_to_file():
@@ -181,7 +181,7 @@ yearDictionary = {
 
 listOfCities = []
 # code to open the excel spreadsheet
-with open('population_final_python_final.csv') as File:
+with open('cities_cluster6.csv') as File:
     reader = csv.reader(File)
     for row in reader:
         rowLength = len(row)

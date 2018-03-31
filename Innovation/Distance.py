@@ -8,10 +8,10 @@ import requests
 import sys
 import csv
 
-shenzhenLocation = '22.542883,114.062996'
 gmaps = googlemaps.Client(key='AIzaSyB8RHdgEToHGLyQUA71DRyXGQqfoVJgSHs')
 # Google Distance Matrix base URL to which all other parameters are attached
-base_url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=22.542883,114.062996&destinations='
+# base_url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=Fatai Atere Way Papa Ajao Lagos, Nigeria&destinations='
+base_url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=2900 Pharr court South NW Atlanta Ga 30305&destinations='
 end_base_url = "&key=AIzaSyB8RHdgEToHGLyQUA71DRyXGQqfoVJgSHs"
 cityDictionary = {
 
@@ -21,11 +21,18 @@ cityDictionary = {
 listOfCities = []
 # code to open the excel spreadsheet
 counter = 0
-with open('cities_2.csv') as File:
-    reader = csv.reader(File)
-    for row in reader:
-        cityDictionary[counter] = {'name': row[0], 'location': '', 'distance': 0}
-        listOfCities.append(row[0])
+# with open('ikorodu_hospitals.csv') as File:
+#     reader = csv.reader(File)
+#     for row in reader:
+#         cityDictionary[counter] = {'name': row[0], 'location': '', 'distance': 0}
+#         listOfCities.append(str(row[0]))
+#         counter = counter + 1
+
+with open('ikorodu_hospitals.csv') as File:
+    for row in File:
+
+        # cityDictionary[counter] = {'name': row[0], 'location': '', 'distance': 0}
+        listOfCities.append(str(row))
         counter = counter + 1
 
 for key in range(len(listOfCities)):
@@ -51,7 +58,7 @@ for z in range(len(listOfCities)):
 
 # opening csv file to output
 filename = ""
-ofile = open(filename + "city-distances.csv", "wb")
+ofile = open(filename + "nigeria clinics location.csv", "wb")
 
 columns = "City, Latitude, Longitud, Distance\n"
 ofile.write(columns)

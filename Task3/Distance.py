@@ -1,7 +1,7 @@
 # google maps api key    AIzaSyBtMWxx528evP5IGAkUNg10CjdpCB7Gha8
 # https://developers.google.com/maps/documentation/directions/intro
 # http://py-googlemaps.sourceforge.net/
-
+# Author. Alejandro Chew
 import googlemaps
 import json
 import requests
@@ -51,7 +51,7 @@ for z in range(len(listOfCities)):
 
 # opening csv file to output
 filename = ""
-ofile = open(filename + "city-distances.csv", "wb")
+ofile = open(filename + "ikeja_lagos and all other states.csv", "wb")
 
 columns = "City, Latitude, Longitud, Distance\n"
 ofile.write(columns)

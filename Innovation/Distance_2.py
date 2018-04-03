@@ -1,17 +1,17 @@
 # google maps api key    AIzaSyBtMWxx528evP5IGAkUNg10CjdpCB7Gha8
 # https://developers.google.com/maps/documentation/directions/intro
 # http://py-googlemaps.sourceforge.net/
-
+# Author. Alejandro Chew
 import googlemaps
 import json
 import requests
 import sys
 import csv
 
+shenzhenLocation = '22.542883,114.062996'
 gmaps = googlemaps.Client(key='AIzaSyB8RHdgEToHGLyQUA71DRyXGQqfoVJgSHs')
 # Google Distance Matrix base URL to which all other parameters are attached
-# base_url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=Fatai Atere Way Papa Ajao Lagos, Nigeria&destinations='
-base_url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=Ikeja lagos&destinations='
+base_url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=FCT Abuja&destinations='
 end_base_url = "&key=AIzaSyB8RHdgEToHGLyQUA71DRyXGQqfoVJgSHs"
 cityDictionary = {
 
@@ -21,18 +21,11 @@ cityDictionary = {
 listOfCities = []
 # code to open the excel spreadsheet
 counter = 0
-# with open('capital_state_nigeria.csv') as File:
-#     reader = csv.reader(File)
-#     for row in reader:
-#         cityDictionary[counter] = {'name': row[0], 'location': '', 'distance': 0}
-#         listOfCities.append(str(row[0]))
-#         counter = counter + 1
-
 with open('capital_state_nigeria.csv') as File:
-    for row in File:
-
-        # cityDictionary[counter] = {'name': row[0], 'location': '', 'distance': 0}
-        listOfCities.append(str(row))
+    reader = csv.reader(File)
+    for row in reader:
+        cityDictionary[counter] = {'name': row[0], 'location': '', 'distance': 0}
+        listOfCities.append(row[0])
         counter = counter + 1
 
 for key in range(len(listOfCities)):
@@ -58,7 +51,7 @@ for z in range(len(listOfCities)):
 
 # opening csv file to output
 filename = ""
-ofile = open(filename + "nigeria clinics location.csv", "wb")
+ofile = open(filename + "fct_abuja and all other states.csv", "wb")
 
 columns = "City, Latitude, Longitud, Distance\n"
 ofile.write(columns)

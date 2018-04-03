@@ -64,7 +64,7 @@ yearDeviationOfRandomDemand = []
 # will have 5 list with the demand for every year iteration
 eachYearDailyDemandList = []
 
-ofile = open(filename + "timetoreacheachcity.csv", "wb")
+ofile = open(filename + "time_from_warehouse_to_cityhub.csv", "wb")
 
 
 def write_to_file():
@@ -178,7 +178,7 @@ yearDictionary = {
 
 listOfCities = []
 # code to open the excel spreadsheet
-with open('distances.csv') as File:
+with open('distaces_from_selected_warehouses.csv') as File:
     reader = csv.reader(File)
     for row in reader:
         rowLength = len(row)

@@ -9,10 +9,10 @@ import sys
 import csv
 
 shenzhenLocation = '22.542883,114.062996'
-gmaps = googlemaps.Client(key='AIzaSyB8RHdgEToHGLyQUA71DRyXGQqfoVJgSHs')
+gmaps = googlemaps.Client(key='AIzaSyDcbgI_lC47VTtIh0tTpAzaOit-7mzmMLc')
 # Google Distance Matrix base URL to which all other parameters are attached
-base_url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=FCT Abuja&destinations='
-end_base_url = "&key=AIzaSyB8RHdgEToHGLyQUA71DRyXGQqfoVJgSHs"
+base_url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=Lagos lagos&destinations='
+end_base_url = "&key=AIzaSyDcbgI_lC47VTtIh0tTpAzaOit-7mzmMLc"
 cityDictionary = {
 
 }
@@ -21,7 +21,7 @@ cityDictionary = {
 listOfCities = []
 # code to open the excel spreadsheet
 counter = 0
-with open('capital_state_nigeria.csv') as File:
+with open('248citiesnigeria.csv') as File:
     reader = csv.reader(File)
     for row in reader:
         cityDictionary[counter] = {'name': row[0], 'location': '', 'distance': 0}
@@ -34,16 +34,17 @@ for key in range(len(listOfCities)):
     jsonDistances = json.loads(distancesRequest.text)
     distances = jsonDistances['rows']
     distanceElements = []
-    print str(key) + "  " + listOfCities[key]
+    # print str(key) + "  " + listOfCities[key]
     for x in range(len(distances)):
         distanceElements = distances[x].get('elements')
 
 
-    cityDictionary[key]['distance'] = (distanceElements[0].get('distance').get('value'))
+    # cityDictionary[key]['distance'] = (distanceElements[0].get('distance').get('value'))
 
 
 
 for z in range(len(listOfCities)):
+    print str(z) + "  " + listOfCities[z]
     response = gmaps.geocode(listOfCities[z])
     coordinates = response[0].get('geometry').get('location')
     theCoordinates = str(float("{0:.5f}".format(coordinates.get('lat')))) + "," + str(float("{0:.5f}".format(coordinates.get('lng'))))
@@ -51,12 +52,13 @@ for z in range(len(listOfCities)):
 
 # opening csv file to output
 filename = ""
-ofile = open(filename + "fct_abuja and all other states.csv", "wb")
+ofile = open(filename + "248citiesnigerialatlong.csv", "wb")
 
 columns = "City, Latitude, Longitud, Distance\n"
 ofile.write(columns)
 for cities in range(len(cityDictionary)):
-    cityRow = cityDictionary[cities].get('name') + "," + cityDictionary[cities].get('location') + "," + str(cityDictionary[cities].get('distance') / 1000) + "\n"
+    cityRow = cityDictionary[cities].get('name') + "," + cityDictionary[cities].get('location') + "\n"
+    # cityRow = cityDictionary[cities].get('name') + "," + cityDictionary[cities].get('location') + "," + str(cityDictionary[cities].get('distance') / 1000) + "\n"
     ofile.write(cityRow)
 
 

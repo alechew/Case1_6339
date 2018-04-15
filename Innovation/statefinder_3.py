@@ -12,13 +12,20 @@ shenzhenLocation = '22.542883,114.062996'
 
 maps = googlemaps.Client(key='AIzaSyBcj_HbD89hlzNCs120yX_PBRmJ3Eejc88')
 # Google Distance Matrix base URL to which all other parameters are attached
-base_url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='
+base_url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
 before_end = '&location='
 end_base_url = "&radius=3500&keyword="
-end_end = "&key=AIzaSyBcj_HbD89hlzNCs120yX_PBRmJ3Eejc88"
+end_end = "&result_type=administrative_area_level_1&key=AIzaSyBcj_HbD89hlzNCs120yX_PBRmJ3Eejc88"
 cityDictionary = {
 
 }
+
+# opening csv file to output
+filename = ""
+ofile = open(filename + "stateOfCities.csv", "wb")
+columns = "City, State\n"
+ofile.write(columns)
+
 
 cityNames = []
 listOfCities = []
@@ -39,34 +46,18 @@ with open('cityname_only.csv') as File2:
 
 for key in range(len(listOfCities)):
     # Assemble the URL and query the web service
-    theUrl = base_url + listOfCities[key] + end_base_url + cityNames[key] + end_end
+    theUrl = base_url + listOfCities[key] + end_end
     distancesRequest = requests.get(theUrl)
     jsonDistances = json.loads(distancesRequest.text)
     # jsonDistances.
 
-    string = "hello"
-    # distances = jsonDistances['rows']
-    # distanceElements = []
-    # # print str(key) + "  " + listOfCities[key]
-    # for x in range(len(distances)):
-    #     distanceElements = distances[x].get('elements')
+    results = jsonDistances['results'][0]['formatted_address']
+    row = cityNames[key] + "," + results + "\n"
+    ofile.write(row)
+    print results
 
 
-    # cityDictionary[key]['distance'] = (distanceElements[0].get('distance').get('value'))
 
-#
-#
-# for z in range(len(listOfCities)):
-#     print str(z) + "  " + listOfCities[z]
-#     response = gmaps.geocode(listOfCities[z])
-#     coordinates = response[0].get('geometry').get('location')
-#     theCoordinates = str(float("{0:.5f}".format(coordinates.get('lat')))) + "," + str(float("{0:.5f}".format(coordinates.get('lng'))))
-#     cityDictionary[z]['location'] = theCoordinates
-#
-# # opening csv file to output
-# filename = ""
-# ofile = open(filename + "stateOfCities.csv", "wb")
-#
 # columns = "City, Latitude, Longitud, Distance\n"
 # ofile.write(columns)
 # for cities in range(len(cityDictionary)):

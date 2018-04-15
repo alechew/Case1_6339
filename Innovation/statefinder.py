@@ -13,7 +13,7 @@ shenzhenLocation = '22.542883,114.062996'
 maps = googlemaps.Client(key='AIzaSyBcj_HbD89hlzNCs120yX_PBRmJ3Eejc88')
 # Google Distance Matrix base URL to which all other parameters are attached
 base_url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input='
-before_end = '&types=establishment&location='
+before_end = '&location='
 end_base_url = "&radius=500&key=AIzaSyBcj_HbD89hlzNCs120yX_PBRmJ3Eejc88"
 cityDictionary = {
 

@@ -20,6 +20,11 @@ cityDictionary = {
 
 }
 
+# opening csv file to output
+filename = ""
+ofile = open(filename + "distancecitytocapital3.csv", "wb")
+columns = "City, Distance\n"
+ofile.write(columns)
 
 listOfCities = []
 # code to open the excel spreadsheet
@@ -38,24 +43,14 @@ for key in range(len(cityDictionary)):
     jsonDistances = json.loads(distancesRequest.text)
     distances = jsonDistances['rows']
     distanceElements = []
+    print str(key) + " " + cityDictionary.get(key).get('cityName')
     # print str(key) + "  " + listOfCities[key]
     for x in range(len(distances)):
         distanceElements = distances[x].get('elements')
 
-
     cityDictionary[key]['distance'] = (distanceElements[0].get('distance').get('value'))
-
-
-# opening csv file to output
-filename = ""
-ofile = open(filename + "distancecitytocapital.csv", "wb")
-
-columns = "City, Distance\n"
-ofile.write(columns)
-for cities in range(len(cityDictionary)):
-    cityRow = cityDictionary.get(cities).get('cityName') + "," + str(cityDictionary[cities].get('distance') / 1000) + "\n"
+    cityRow = cityDictionary.get(key).get('cityName') + "," + str(cityDictionary[key].get('distance') / 1000) + "\n"
     ofile.write(cityRow)
-
 
 string = "hello"
 
